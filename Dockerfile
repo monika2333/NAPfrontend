@@ -29,5 +29,7 @@ COPY . .
 RUN pnpm build
 
 FROM nginx:latest
-COPY nginx.conf /etc/nginx
+MAINTAINER ps
+RUN rm /etc/nginx/conf.d/default.conf  
+ADD default.conf /etc/nginx/conf.d/
 COPY --from=builder /app/dist /usr/share/nginx/html
