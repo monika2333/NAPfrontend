@@ -59,6 +59,7 @@ export default {
   },
   mounted() {
     get1().then(res => {
+      console.log(res)
       this.tableData1 = res
     });
     get2().then(res => {
