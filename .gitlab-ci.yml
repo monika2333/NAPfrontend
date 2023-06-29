@@ -21,7 +21,7 @@ build:
     # 查看docker信息
     - docker info
     # docker build命令制作镜像
-    - docker build -t testPro .
+    - docker build -t testpro .
 
 # 表示deploy阶段的开始
 deploy:
@@ -34,6 +34,6 @@ deploy:
     # 如果该镜像构建的容器已经在运行中，则将运行中的容器移除
     - if [ $(docker ps -aq --filter name=TESTPRO) ]; then docker rm -f TESTPRO;fi
     # 使用镜像构建容器，在8081端口上运行
-    - docker run -d -p 8081:8081 --name TESTEND testPro
+    - docker run -d -p 8081:8081 --name TESTEND testpro
     # 打印信息
     - echo "deploy finished"
