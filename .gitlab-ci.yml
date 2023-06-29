@@ -1,0 +1,39 @@
+# 表示此任务内一共有两个阶段，后续的每个job必须从全局定义的这两个阶段中选择一个
+stages:
+  - build
+  - deploy
+
+# 定义在所有任务执行前需要执行的命令，此处为全局的script，也可以在单个的job中定义before_script，与此相对也有在所有任务执行之后才会执行的after_script
+before_script:
+  - echo "execute this before script"
+
+# 表示build阶段的开始
+build:
+  # 指定此阶段需要用哪个tag的runner去执行，取值范围是该项目可见的所有runner
+  tags:
+    - testrunner
+  # 使用docker作为基础镜像
+  image: docker
+  # 指定全局阶段build
+  stage: build
+  # 待执行脚本
+  script:
+    # 查看docker信息
+    - docker info
+    # docker build命令制作镜像
+    - docker build -t testPro .
+
+# 表示deploy阶段的开始
+deploy:
+  tags:
+    - testrunner
+  image: docker
+  # 指定全局阶段deploy
+  stage: deploy
+  script:
+    # 如果该镜像构建的容器已经在运行中，则将运行中的容器移除
+    - if [ $(docker ps -aq --filter name=TESTPRO) ]; then docker rm -f TESTPRO;fi
+    # 使用镜像构建容器，在8081端口上运行
+    - docker run -d -p 8081:8081 --name TESTEND testPro
+    # 打印信息
+    - echo "deploy finished"
