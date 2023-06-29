@@ -1,6 +1,6 @@
 <template>
   <div>
-  <!-- <div style="margin-bottom: 20px;">
+  <div style="margin-bottom: 20px;">
     <span style="font-size: 20px; font-weight: bold; line-height: 40px;">ABCnews最新信息</span>
     <el-table :data="tableData1" stripe style="width: 100%">
       <el-table-column prop="time" label="日期" width="180"> </el-table-column>
@@ -40,7 +40,7 @@
       </template>
     </el-table-column>
     </el-table>
-  </div> -->
+  </div>
   </div>
 </template>
 
