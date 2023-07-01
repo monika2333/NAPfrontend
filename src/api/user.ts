@@ -39,14 +39,10 @@ export const refreshTokenApi = (data?: object) => {
   return http.request<RefreshTokenResult>("post", "/refreshToken", { data });
 };
 
-export const get1 = () => {
-  return http.request<RefreshTokenResult>("get", baseUrlApi("abcnews"));
+export const getNews = (data) => {
+  return http.request<RefreshTokenResult>("post", baseUrlApi("newsData/news"), { data });
 };
 
-export const get2 = () => {
-  return http.request<RefreshTokenResult>("get", baseUrlApi("bbc"));
-};
-
-export const get3 = () => {
-  return http.request<RefreshTokenResult>("get", baseUrlApi("financialTimes"));
+export const getSource = () => {
+  return http.request<RefreshTokenResult>("get", baseUrlApi("baseData/allSource"));
 };
