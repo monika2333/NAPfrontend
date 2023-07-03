@@ -23,4 +23,4 @@ MAINTAINER test
 RUN rm /etc/nginx/conf.d/default.conf  
 ADD default.conf /etc/nginx/conf.d/
 # 将上一步中打包好的vue项目（dist）复制到基础镜像中Nginx配置文件的指定路径下 
-COPY dist/ /usr/share/nginx/html
+COPY dist/ /usr/share/nginx/html/
