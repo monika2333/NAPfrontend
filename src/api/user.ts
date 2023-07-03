@@ -46,3 +46,11 @@ export const getNews = (data) => {
 export const getSource = () => {
   return http.request<RefreshTokenResult>("get", baseUrlApi("baseData/allSource"));
 };
+
+export const getSourceNum = () => {
+  return http.request<RefreshTokenResult>("get", baseUrlApi("baseData/allSourceNum"));
+};
+
+export const getLanguageNum = () => {
+  return http.request<RefreshTokenResult>("get", baseUrlApi("baseData/allLanguageNum"));
+};
