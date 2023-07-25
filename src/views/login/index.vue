@@ -2,21 +2,24 @@
 import Motion from "./utils/motion";
 import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
-import { loginRules } from "./utils/rule";
 import { useNav } from "@/layout/hooks/useNav";
 import type { FormInstance } from "element-plus";
 import { useLayout } from "@/layout/hooks/useLayout";
-import { useUserStoreHook } from "@/store/modules/user";
+// import { useUserStoreHook } from "@/store/modules/user";
 import { initRouter, getTopMenu } from "@/router/utils";
 import { bg, avatar, illustration } from "./utils/static";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
+import { Login } from '@/api/user';
 
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
 import Lock from "@iconify-icons/ri/lock-fill";
 import User from "@iconify-icons/ri/user-3-fill";
+import { setToken } from "@/utils/auth";
+import { addPathMatch } from "@/router/utils";
+import { usePermissionStoreHook } from "@/store/modules/permission";
 
 defineOptions({
   name: "Login"
@@ -33,8 +36,8 @@ dataThemeChange();
 const { title } = useNav();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  username: "cuc@cuc",
+  password: ""
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -42,17 +45,29 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
-        .then(res => {
-          if (res.success) {
-            // 获取后端路由
-            initRouter().then(() => {
-              router.push(getTopMenu(true).path);
-              message("登录成功", { type: "success" });
-            });
+      Login({ 'username': ruleForm.username, 'password': ruleForm.password }).then(
+          res => {
+          console.log(res)
+          if (res == 'yes')
+          {
+            usePermissionStoreHook().handleWholeMenus([]);
+            addPathMatch();
+            //请求成功
+            setToken({
+              username: "admin",
+              roles: ["admin"],
+              accessToken: "eyJhbGciOiJIUzUxMiJ9.admin"
+            } as any);
+            router.push("/");
+            loading.value = false;
           }
-        });
+          else
+          {
+            message("登录失败，请重试", { type: "error" });
+            loading.value = false;
+          }
+        }
+      )
     } else {
       loading.value = false;
       return fields;
@@ -103,7 +118,6 @@ onBeforeUnmount(() => {
           <el-form
             ref="ruleFormRef"
             :model="ruleForm"
-            :rules="loginRules"
             size="large"
           >
             <Motion :delay="100">

@@ -1,56 +1,31 @@
 import { http } from "@/utils/http";
 import { baseUrlApi } from "./utils";
 
-export type UserResult = {
-  success: boolean;
-  data: {
-    /** 用户名 */
-    username: string;
-    /** 当前登陆用户的角色 */
-    roles: Array<string>;
-    /** `token` */
-    accessToken: string;
-    /** 用于调用刷新`accessToken`的接口时所需的`token` */
-    refreshToken: string;
-    /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
-    expires: Date;
-  };
-};
-
-export type RefreshTokenResult = {
-  success: boolean;
-  data: {
-    /** `token` */
-    accessToken: string;
-    /** 用于调用刷新`accessToken`的接口时所需的`token` */
-    refreshToken: string;
-    /** `accessToken`的过期时间（格式'xxxx/xx/xx xx:xx:xx'） */
-    expires: Date;
-  };
-};
-
 /** 登录 */
-export const getLogin = (data?: object) => {
-  return http.request<UserResult>("post", "/login", { data });
-};
-
-/** 刷新token */
-export const refreshTokenApi = (data?: object) => {
-  return http.request<RefreshTokenResult>("post", "/refreshToken", { data });
+export const Login = (data?: object) => {
+  return http.request<any>("post", baseUrlApi("user/login"), { data });
 };
 
 export const getNews = (data) => {
-  return http.request<RefreshTokenResult>("post", baseUrlApi("newsData/news"), { data });
+  return http.request<any>("post", baseUrlApi("newsData/news"), { data });
 };
 
 export const getSource = () => {
-  return http.request<RefreshTokenResult>("get", baseUrlApi("baseData/allSource"));
+  return http.request<any>("get", baseUrlApi("baseData/allSource"));
 };
 
 export const getSourceNum = () => {
-  return http.request<RefreshTokenResult>("get", baseUrlApi("baseData/allSourceNum"));
+  return http.request<any>("get", baseUrlApi("baseData/allSourceNum"));
 };
 
 export const getLanguageNum = () => {
-  return http.request<RefreshTokenResult>("get", baseUrlApi("baseData/allLanguageNum"));
+  return http.request<any>("get", baseUrlApi("baseData/allLanguageNum"));
+};
+
+export const addSourceMedia = (data) => {
+  return http.request<any>("post", baseUrlApi("source/add"), {data});
+};
+
+export const getMediaList = () => {
+  return http.request<any>("get", baseUrlApi("source/list"));
 };
