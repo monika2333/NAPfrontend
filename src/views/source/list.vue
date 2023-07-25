@@ -20,7 +20,7 @@ export default {
     },
     mounted() {
         getMediaList().then(res => {
-            this.tableData = res
+            this.tableData = res //
         })
     },
 }
