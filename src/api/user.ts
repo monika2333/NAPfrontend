@@ -26,6 +26,10 @@ export const addSourceMedia = (data) => {
   return http.request<any>("post", baseUrlApi("source/add"), {data});
 };
 
+export const delSourceMedia = (data) => {
+  return http.request<any>("post", baseUrlApi("source/delete"), {data});
+};
+
 export const getMediaList = () => {
   return http.request<any>("get", baseUrlApi("source/list"));
 };
