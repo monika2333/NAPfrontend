@@ -1,8 +1,7 @@
 <h1>vue-pure-admin精简版（非国际化版本）</h1>
 
-[![license](https://img.shields.io/github/license/pure-admin/vue-pure-admin.svg)](LICENSE)
-
-**中文** | [English](./README.en-US.md)
+## 注意
+现在一定要先 pnpm build 之后再push ！！！我的服务器支撑不住在服务器上build，会卡爆
 
 ## 介绍
 
