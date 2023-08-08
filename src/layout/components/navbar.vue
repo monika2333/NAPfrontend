@@ -41,7 +41,7 @@ const {
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">
       <!-- 菜单搜索 -->
-      <Search />
+      <!-- <Search /> -->
       <!-- 通知 -->
       <Notice id="header-notice" />
       <!-- 退出登录 -->

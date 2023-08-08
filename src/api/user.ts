@@ -22,6 +22,12 @@ export const getLanguageNum = () => {
   return http.request<any>("get", baseUrlApi("baseData/allLanguageNum"));
 };
 
+
+// view/source
+export const checkRss = (data) => {
+  return http.request<any>("post", baseUrlApi("source/check"), {data});
+};
+
 export const addSourceMedia = (data) => {
   return http.request<any>("post", baseUrlApi("source/add"), {data});
 };

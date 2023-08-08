@@ -56,7 +56,7 @@
   </template>
   
   <script>
-  import {addSourceMedia} from '@/api/user'
+  import {checkRss, addSourceMedia} from '@/api/user'
   export default {
     data() {
       return {
@@ -87,18 +87,27 @@
           {
             this.media.rssLink = 'http://127.0.0.1:1200/' + this.media.rssLink
           }
-          addSourceMedia(this.media).then(res=>{
+          checkRss({rss: this.media.rssLink}).then(res=>{
             if(res=='success')
             {
-              alert('添加成功')
-              this.submitClose()
+              addSourceMedia(this.media).then(res=>{
+                if(res=='success')
+                {
+                  alert('添加成功')
+                  this.submitClose()
+                }
+                else
+                {
+                  alert('添加失败')
+                }
+                this.media.name = ''
+                this.media.rssLink = ''
+              })
             }
             else
             {
-              alert('添加失败')
+              alert('rss校验失败，请检查地址是否准确')
             }
-            this.media.name = ''
-            this.media.rssLink = ''
           })
         }
       }
