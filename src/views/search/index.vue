@@ -23,7 +23,7 @@
 
     <div style="margin-top: 30px">
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="time" label="日期（UTC+0）" width="180"> </el-table-column>
+        <el-table-column prop="time" label="日期（UTC+8）" width="180"> </el-table-column>
         <el-table-column prop="column" label="频道" width="180"> </el-table-column>
         <el-table-column prop="title" label="标题"> </el-table-column>
         <el-table-column fixed="right" label="操作" width="200">

@@ -26,7 +26,7 @@
             direction="ltr"
             size="50%"
             :before-close="handleClose">
-            <AddSourceVue :submitClose="submitClose"></AddSourceVue>
+            <AddSource ref="add" :submitClose="submitClose"></AddSource>
         </el-drawer>
     </div>
 </template>
@@ -35,7 +35,7 @@
 import { getMediaList } from "@/api/user";
 import { ElMessageBox } from 'element-plus'
 import SourceCard from './sourceCard.vue';
-import AddSourceVue from './addSource.vue';
+import AddSource from './addSource.vue';
 
 export default {
     data() {
@@ -47,7 +47,7 @@ export default {
     },
     components:{
         SourceCard,
-        AddSourceVue
+        AddSource
     },
     mounted() {
         getMediaList().then(res => {
@@ -78,6 +78,8 @@ export default {
             ElMessageBox.confirm('确定要关闭吗？（你将失去所填内容）')
             .then(() => {
                 this.$refs.drawer.close()
+                this.$refs.add.media.name = ''
+                this.$refs.add.media.rssLink = ''
             })
             .catch(() => {
                 

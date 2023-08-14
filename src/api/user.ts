@@ -22,6 +22,10 @@ export const getLanguageNum = () => {
   return http.request<any>("get", baseUrlApi("baseData/allLanguageNum"));
 };
 
+//view/welcome
+export const getTophub = (data) => {
+  return http.request<any>("post", baseUrlApi("home/tophub"), {data});
+};
 
 // view/source
 export const checkRss = (data) => {

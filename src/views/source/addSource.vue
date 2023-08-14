@@ -111,6 +111,10 @@
           })
         }
       }
+    },
+    deactivated(){
+      this.media.name = ''
+      this.media.rssLink = ''
     }
   }
   </script>
