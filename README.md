@@ -1,39 +1,34 @@
 <h1>vue-pure-admin精简版（非国际化版本）</h1>
 
 ## 注意
-现在一定要先 pnpm build 之后再push ！！！我的服务器支撑不住在服务器上build，会卡爆
+先 pnpm build 之后再push
 
-## 介绍
+## gitlab
+https://gitlab.com/llmy/NAPfrontend
 
-精简版是基于 [vue-pure-admin](https://github.com/pure-admin/vue-pure-admin) 提炼出的架子，包含主体功能，更适合实际项目开发，打包后的大小在全局引入 [element-plus](https://element-plus.org) 的情况下仍然低于 `2.3MB`，并且会永久同步完整版的代码。开启 `brotli` 压缩和 `cdn` 替换本地库模式后，打包大小低于 `350kb`
+## 预览
+http://8.210.124.68:8081/
+密码：zgcmdxgysys123
 
-## 版本选择
-
-当前是非国际化版本，如果您需要国际化版本 [请点击](https://github.com/pure-admin/pure-admin-thin/tree/i18n)
-
-## 配套视频
-
-- [点我查看教程](https://www.bilibili.com/video/BV1kg411v7QT)
-- [点我查看 UI 设计](https://www.bilibili.com/video/BV17g411T7rq)
-
-## 配套保姆级文档
+## 官方文档
 
 - [查看文档](https://yiming_chang.gitee.io/pure-admin-doc)
 
-## 预览
+## 文件位置
 
-- [查看预览](https://pure-admin-thin.netlify.app/#/login)
+配置本地连哪个后端 vite.config.ts
+添加向后端发送的请求 src\api\user.ts
+添加新的页面路由 src\router\modules 里新建
+添加新的页面 src\views 里新建
 
-## 维护者
-
-[xiaoxian521](https://github.com/xiaoxian521)
-
-## ⚠️ 注意
-
-- 精简版不接受任何 `issues` 和 `pr`，如果有问题请到完整版 [issues](https://github.com/pure-admin/vue-pure-admin/issues/new/choose) 去提，谢谢！
-
-## 许可证
-
-原则上不收取任何费用及版权，可商用，不过如需二次开源（比如用此平台二次开发并开源，要求前端代码必须开源免费）请联系作者获取许可！（免费，走个记录而已）
-
-[MIT © 2020-present, pure-admin](./LICENSE)
+## 增加功能
+### 首页
+图表（复制、迁移）
+### 搜索
+增加搜索条件：关键词、时间（后端加选项、改页面、js）
+分页显示全部（设置element组件）
+### 媒体源
+修改（增加时用的组件重复调用、默认有已有的信息）
+### 新页面
+发送邮件、私有微信（从头写）
+添加邮箱（从头写）

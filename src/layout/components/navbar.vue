@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Search from "./search/index.vue";
+//import Search from "./search/index.vue";
 import Notice from "./notice/index.vue";
 import mixNav from "./sidebar/mixNav.vue";
 import { useNav } from "@/layout/hooks/useNav";
@@ -40,11 +40,12 @@ const {
     <mixNav v-if="layout === 'mix'" />
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">
+      <!-- 右上角去掉搜索，保留通知、头像、设置-->
       <!-- 菜单搜索 -->
       <!-- <Search /> -->
       <!-- 通知 -->
       <Notice id="header-notice" />
-      <!-- 退出登录 -->
+      <!-- 退出系统 -->
       <el-dropdown trigger="click">
         <span class="el-dropdown-link navbar-bg-hover select-none">
           <img :src="userAvatar" :style="avatarsStyle" />
@@ -62,6 +63,7 @@ const {
           </el-dropdown-menu>
         </template>
       </el-dropdown>
+      <!-- 页面配置-->
       <span
         class="set-icon navbar-bg-hover"
         title="打开项目配置"

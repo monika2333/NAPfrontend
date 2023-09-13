@@ -52,6 +52,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           console.log(res)
           if (res == 'yes')
           {
+            //使用静态路由
             usePermissionStoreHook().handleWholeMenus([]);
             addPathMatch();
             //请求成功

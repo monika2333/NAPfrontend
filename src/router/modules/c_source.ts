@@ -10,7 +10,7 @@ export default {
       name: "SourceList",
       component: () => import("@/views/source/list.vue"),
       meta: {
-        title: "媒体源操作"
+        title: "媒体源"
       }
     }
   ]
