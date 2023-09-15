@@ -30,13 +30,15 @@
         />
       </div>
     </div>
-    <div style="display: flex; align-items: center; margin-top: 30px">
+    <div style="display: flex; flex-direction:row; align-items: center; margin-top: 30px; justify-content:space-between;flex-wrap: wrap">
       <div style="display: flex; align-items: center">
         <span class="searchText">关键词（多个关键词请用英文逗号分割）：</span>
         <el-input v-model="keyword" style="width: 400px;"/>
       </div>
-      <el-button type="primary" style="margin-left: auto;" @click="getData">查询</el-button>
-      <el-button type="primary" style="margin-left: 10px;">清空条件</el-button>
+      <div>
+        <el-button type="primary" @click="getData">查询</el-button>
+        <el-button type="primary">清空条件</el-button>
+      </div>
     </div>
 
     <div style="margin-top: 30px">
