@@ -42,7 +42,7 @@
     </div>
 
     <div style="margin-top: 30px">
-      <el-table :data="tableData" stripe style="width: 100%">
+      <el-table :data="showData" stripe style="width: 100%">
         <el-table-column prop="time" label="日期（UTC+8）" width="180"> </el-table-column>
         <el-table-column prop="column" label="频道" width="180"> </el-table-column>
         <el-table-column prop="title" label="标题"> </el-table-column>
@@ -53,6 +53,15 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination">
+        <el-pagination
+          background
+          layout="prev, pager, next ,total,sizes"
+          :total="total"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -68,13 +77,14 @@ export default {
     return {
       options: [],
       source: '',
-      nums: 200,
+      nums: 20,
       time: '',
       keyword: '',
 
       tableData: [],
-
-      drawer: false,
+      page: 1,
+      limit: 10,
+      total: 0,
     };
   },
   mounted() {
@@ -96,12 +106,42 @@ export default {
         }
       )
     },
+    //改变页码
+    handleCurrentChange(e){
+      this.page = e;
+    },
+    //改变页数限制
+    handleSizeChange(e){
+      this.limit = e;
+    },
 
     getData() {
-      getNews({'source': this.source, 'limit': this.nums}).then(res => {
+      // console.log(this.time)
+      // console.log(this.keyword)
+      getNews({'source': this.source, 'limit': this.nums, 'time': this.time, 'keyword': this.keyword}).then(res => {
         this.tableData = res
+        this.total = this.tableData.length
       });
     },
-  }
+  },
+  computed: {
+    showData(){
+      return this.tableData.filter(
+        (item, index) =>
+          index < this.page * this.limit &&
+          index >= this.limit * (this.page - 1)
+      );
+    }
+  },
 }
 </script>
+
+<style scoped>
+.pagination{
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

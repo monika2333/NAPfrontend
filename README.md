@@ -6,10 +6,6 @@
 ## gitlab
 https://gitlab.com/llmy/NAPfrontend
 
-## 预览
-http://8.210.124.68:8081/
-密码：zgcmdxgysys123
-
 ## 官方文档
 
 - [查看文档](https://yiming_chang.gitee.io/pure-admin-doc)
@@ -23,10 +19,10 @@ http://8.210.124.68:8081/
 
 ## 增加功能
 ### 首页
-图表（复制、迁移）
+
 ### 搜索
 增加搜索条件：关键词、时间（后端加选项、改页面、js）
-分页显示全部（设置element组件）
+分页显示全部
 ### 媒体源
 修改（增加时用的组件重复调用、默认有已有的信息）
 ### 新页面
