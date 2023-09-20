@@ -89,7 +89,7 @@ export default {
   },
   mounted() {
     getSource().then(res => {
-      this.options = res
+      this.options = res.data
     })
   },
   methods: {
@@ -119,7 +119,8 @@ export default {
       // console.log(this.time)
       // console.log(this.keyword)
       getNews({'source': this.source, 'limit': this.nums, 'time': this.time, 'keyword': this.keyword}).then(res => {
-        this.tableData = res
+        console.log(res)
+        this.tableData = res.data
         this.total = this.tableData.length
       });
     },

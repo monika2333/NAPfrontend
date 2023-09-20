@@ -43,13 +43,13 @@ export default {
     mounted(){
         this.value = this.column[0]
         getTophub({source: this.source, column: this.value}).then(res=>{
-            this.top = res
+            this.top = res.data
         })
     },
     watch:{
         value(){
             getTophub({source: this.source, column: this.value}).then(res=>{
-                this.top = res
+                this.top = res.data
             })
         }
     }
