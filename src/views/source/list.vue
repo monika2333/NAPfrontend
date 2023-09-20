@@ -88,7 +88,7 @@ export default {
         submitClose(){
             console.log('yes')
             getMediaList().then(res => {
-                this.tableData = res
+                this.tableData = res.data
             })
         },
     }
