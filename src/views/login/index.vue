@@ -50,7 +50,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       Login({ 'username': ruleForm.username, 'password': ruleForm.password }).then(
           res => {
           console.log(res)
-          if (res == 'yes')
+          if (res.code == 0)
           {
             //使用静态路由
             usePermissionStoreHook().handleWholeMenus([]);

@@ -16,7 +16,7 @@ export default {
   },
   mounted() {
     getLanguageNum().then(res => {
-      res.forEach(el => {
+      res.data.forEach(el => {
         let item = {
           name: el._id,
           value: el.counter

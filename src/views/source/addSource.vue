@@ -88,10 +88,10 @@
             this.media.rssLink = 'http://127.0.0.1:1200/' + this.media.rssLink
           }
           checkRss({rss: this.media.rssLink}).then(res=>{
-            if(res=='success')
+            if(res.code==0)
             {
               addSourceMedia(this.media).then(res=>{
-                if(res=='success')
+                if(res.code==0)
                 {
                   alert('添加成功')
                   this.submitClose()

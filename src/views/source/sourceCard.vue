@@ -55,7 +55,7 @@ export default {
                 .then(()=>{
                     delSourceMedia({rssLink: this.mediaData.rssLink}).then(
                     res => {
-                        if(res=='success')
+                        if(res.code==0)
                         {
                             alert('删除成功')
                             this.submitClose()
