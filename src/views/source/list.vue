@@ -16,7 +16,7 @@
         </div>
         <el-row :gutter="25">
             <el-col :xs="12" :sm="8" :md="8" :lg="6" :xl="6" v-for="d in tableDataFilter" :key="d.rssLink">
-                <SourceCard style="margin-bottom: 30px;" :mediaData="d" :submitClose="submitClose"></SourceCard>
+                <SourceCard style="margin-bottom: 30px;" @getCardInfo="getCardInfo" :mediaData="d" :submitClose="submitClose" :openUpdateDrawer="openUpdateDrawer"></SourceCard>
             </el-col>
         </el-row>
 
@@ -28,6 +28,14 @@
             :before-close="handleClose">
             <AddSource ref="add" :submitClose="submitClose"></AddSource>
         </el-drawer>
+        <el-drawer
+            ref="drawer2"
+            v-model="drawer2"
+            direction="ltr"
+            size="50%"
+            :before-close="handleClose2">
+            <UpdateSource ref="update" :dataNeedUpdate="dataNeedUpdate" :handleClose2="handleClose2"></UpdateSource>
+        </el-drawer>
     </div>
 </template>
 
@@ -36,6 +44,7 @@ import { getMediaList } from "@/api/user";
 import { ElMessageBox } from 'element-plus'
 import SourceCard from './sourceCard.vue';
 import AddSource from './addSource.vue';
+import UpdateSource from './updateSource.vue';
 
 export default {
     data() {
@@ -43,11 +52,14 @@ export default {
             tableData: [],
             keyword: '',
             drawer: false,
+            drawer2:false,
+            dataNeedUpdate: {},
         };
     },
     components:{
         SourceCard,
-        AddSource
+        AddSource,
+        UpdateSource,
     },
     mounted() {
         getMediaList().then(res => {
@@ -91,12 +103,27 @@ export default {
                 this.tableData = res.data
             })
         },
+        handleClose2(){
+            ElMessageBox.confirm('确定要关闭吗？（你将失去所填内容）')
+            .then(() => {
+                this.$refs.drawer2.close()
+            })
+            .catch(() => {})
+        },
+        openUpdateDrawer(){
+            this.drawer2 = true
+        },
+        getCardInfo(data){
+            this.dataNeedUpdate = data
+            console.log(this.dataNeedUpdate)
+        }
     }
 }
 </script>
 
 <script setup>
 import {Plus,Search} from '@element-plus/icons-vue'
+import updateSourceVue from './updateSource.vue';
 </script>
 
 <style scoped>
