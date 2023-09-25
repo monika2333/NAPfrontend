@@ -37,8 +37,17 @@
       "
     >
       <div style="display: flex; align-items: center">
-        <span class="searchText">关键词（多个关键词请用英文逗号分割）：</span>
-        <el-input v-model="keyword" style="width: 400px" />
+        <span class="searchText">关键词：</span>
+        <el-select
+          v-model="keyword"
+          multiple
+          filterable
+          allow-create
+          default-first-option
+          :reserve-keyword="false"
+          placeholder="请输入关键字"
+        >
+        </el-select>
       </div>
       <div>
         <el-button type="primary" @click="getData">查询</el-button>
@@ -87,7 +96,7 @@ export default {
       source: '',
       nums: 0,
       time: '',
-      keyword: '',
+      keyword: [],
 
       tableData: [],
       currentPage: 0,
@@ -127,14 +136,15 @@ export default {
       this.limit = e;
     },
     handleClearConditions() {
-      this.newSearch = !this.newSearch
+      this.newSearch = !this.newSearch;
+      this.keyword = [];
+      this.time = '';
+      this.source = '';
     },
     getData() {
-      // console.log(this.time)
-      // console.log(this.keyword)
       // 新查询
       if (this.newSearch) {
-        getNews({'source': this.source, 'limit': this.limit, 'time': this.time, 'keyword': this.keyword}).then(res => {
+        getNews({'source': this.source, 'limit': this.limit, 'time': this.time, 'keyword': this.keyword.map(w => w.trim())}).then(res => {
           this.newSearch = !this.newSearch
           this.total = res.data.count
           // console.log(res)
@@ -174,4 +184,5 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 </style>
