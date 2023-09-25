@@ -6,14 +6,14 @@ import { useNav } from "@/layout/hooks/useNav";
 import type { FormInstance } from "element-plus";
 import { useLayout } from "@/layout/hooks/useLayout";
 // import { useUserStoreHook } from "@/store/modules/user";
-import { initRouter, getTopMenu } from "@/router/utils";
+//import { initRouter, getTopMenu } from "@/router/utils";
 import bg from "@/assets/login/bg.png";
 import avatar from "@/assets/login/icon.svg?component";
 import illustration from "@/assets/login/illustration.svg?component";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
 import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
-import { Login } from '@/api/user';
+import { Login } from "@/api/user";
 
 import dayIcon from "@/assets/svg/day.svg?component";
 import darkIcon from "@/assets/svg/dark.svg?component";
@@ -47,8 +47,8 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      Login({ 'username': ruleForm.username, 'password': ruleForm.password }).then(
-          res => {
+      Login({ username: ruleForm.username, password: ruleForm.password }).then(
+        res => {
           console.log(res)
           if (res.code == 0)
           {

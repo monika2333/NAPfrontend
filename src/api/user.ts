@@ -8,13 +8,13 @@ export const Login = (data?: object) => {
 
 //首页
 //热度topN
-export const getTophub = (data) => {
-  return http.request<any>("post", baseUrlApi("home/tophub"), {data});
+export const getTophub = data => {
+  return http.request<any>("post", baseUrlApi("home/tophub"), { data });
 };
 
 //搜索页
 //新闻数据
-export const getNews = (data) => {
+export const getNews = data => {
   return http.request<any>("post", baseUrlApi("newsData/news"), { data });
 };
 //媒体下拉框选项
@@ -36,14 +36,30 @@ export const getMediaList = () => {
   return http.request<any>("get", baseUrlApi("source/list"));
 };
 //增加rss
-export const addSourceMedia = (data) => {
-  return http.request<any>("post", baseUrlApi("source/add"), {data});
+export const addSourceMedia = data => {
+  return http.request<any>("post", baseUrlApi("source/add"), { data });
 };
 //rss路由检查
-export const checkRss = (data) => {
-  return http.request<any>("post", baseUrlApi("source/check"), {data});
+export const checkRss = data => {
+  return http.request<any>("post", baseUrlApi("source/check"), { data });
 };
 //删除rss
-export const delSourceMedia = (data) => {
-  return http.request<any>("post", baseUrlApi("source/delete"), {data});
+export const delSourceMedia = data => {
+  return http.request<any>("post", baseUrlApi("source/delete"), { data });
+};
+export const delMessage = data => {
+  return http.request<any>("post", baseUrlApi("messageSubscribe/delete"), {
+    data
+  });
+};
+export const addMessage = data => {
+  return http.request<any>("post", baseUrlApi("messageSubscribe/add"), {
+    data
+  });
+};
+
+export const handleClick = data => {
+  return http.request<any>("post", baseUrlApi("messageSubscribe/delete"), {
+    data
+  });
 };
