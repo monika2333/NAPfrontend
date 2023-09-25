@@ -9,7 +9,7 @@
             <span class="headItem">{{ mediaData.rssLink }}</span>
         </div>
         <div class="split">
-            <el-button type="success" circle class="button">
+            <el-button ref="buttonUpdate" type="success" circle class="button" @click="handleUpdate">
                 <el-icon :size="20"><EditPen /></el-icon>
             </el-button>
             <el-button ref="buttonDelete" type="danger" circle class="button" @click="handleDelete">
@@ -39,7 +39,7 @@ export default {
 
         }
     },
-    props: ['mediaData', 'submitClose'],
+    props: ['mediaData', 'submitClose', 'openUpdateDrawer'],
     mounted(){
         
     },
@@ -69,6 +69,10 @@ export default {
                 .catch(() => {})
                 })
             }
+        },
+        handleUpdate(){
+            this.$emit('getCardInfo', this.mediaData)
+            this.openUpdateDrawer()
         }
     }
 }

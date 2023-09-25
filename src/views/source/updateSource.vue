@@ -1,11 +1,5 @@
 <template>
-    <el-form
-      :model="media"
-      label-width="120px"
-      ref="ruleFormRef"
-      v-loading="loading"
-      element-loading-text="新增中......"
-      element-loading-background="rgba(200, 200, 200, 0.8)">
+    <el-form :model="media" label-width="120px" ref="ruleFormRef">
       <el-form-item label="媒体名称" required error>
         <el-input v-model="media.name" style="width: 500px;"/>
       </el-form-item>
@@ -31,16 +25,8 @@
           <el-radio label="未知" />
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="rss链接类型">
-        <el-radio-group v-model="rsstype">
-          <el-radio label="rsshub路由" />
-          <el-radio label="外部网站" />
-        </el-radio-group>
-      </el-form-item>
       <el-form-item label="rss链接" required error>
-        <el-input v-model="media.rssLink" style="width: 500px;">
-          <template #prepend v-if="rsstype == 'rsshub路由'">http://127.0.0.1:1200/</template>
-        </el-input>
+        <el-input v-model="media.rssLink" style="width: 500px;"></el-input>
       </el-form-item>
       <el-form-item label="采集标签信息（请先确定rss中有该字段）" label-width="300px">
         <el-radio-group v-model="media.needTag">
@@ -77,11 +63,20 @@
           needAuthor: '否',
           comment: '',
         },
-        rsstype: 'rsshub路由',
-        loading: false,
       }
     },
-    props: ['submitClose'],
+    props: ['dataNeedUpdate', 'handleClose2'],
+    mounted(){
+      this.putDataIntoView()
+    },
+    watch:{
+      dataNeedUpdate:{
+        handler: function(){
+          this.putDataIntoView()
+        },
+        deep: true,
+      }
+    },
     methods: {
       onSubmit() {
         if (this.media.name == '' || this.media.rssLink == '')
@@ -90,42 +85,30 @@
         }
         else
         {
-          this.loading = true
-          if(this.rsstype == 'rsshub路由')
-          {
-            this.media.rssLink = 'http://127.0.0.1:1200/' + this.media.rssLink
-          }
           checkRss({rss: this.media.rssLink}).then(res=>{
             if(res.code==0)
             {
-              addSourceMedia(this.media).then(res=>{
-                if(res.code==0)
-                {
-                  alert('添加成功')
-                  this.submitClose()
-                }
-                else
-                {
-                  alert('添加失败')
-                }
-                this.media.name = ''
-                this.media.rssLink = ''
-                this.loading = false
-              })
+              this.handleClose2()
             }
             else
             {
               alert('rss校验失败，请检查地址是否准确')
-              this.loading = false
             }
           })
         }
+      },
+      putDataIntoView(){
+        this.media.name = this.dataNeedUpdate.mediaName
+        this.media.type = this.dataNeedUpdate.mediaType
+        this.media.link = this.dataNeedUpdate.mediaLink
+        this.media.column = this.dataNeedUpdate.column
+        this.media.language = this.dataNeedUpdate.language
+        this.media.rssLink = this.dataNeedUpdate.rssLink
+        this.media.needTag = '否'
+        this.media.needAuthor = '否'
+        this.media.comment = this.dataNeedUpdate.comment
       }
     },
-    deactivated(){
-      this.media.name = ''
-      this.media.rssLink = ''
-    }
   }
   </script>
   
