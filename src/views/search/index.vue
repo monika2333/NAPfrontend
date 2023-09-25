@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { ElMessageBox } from 'element-plus';
+import { ElMessageBox } from "element-plus";
 import { getNews } from "@/api/user";
 import { getSource } from "@/api/user";
 
