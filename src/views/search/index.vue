@@ -3,7 +3,7 @@
     <div style="display: flex; align-items: center">
       <div>
         <span class="searchText">信息来源：</span>
-        <el-select v-model="source" clearable placeholder="请选择" style="width: 250px;" multiple="true">
+        <el-select v-model="source" clearable placeholder="请选择" style="width: 250px;" :multiple=true>
           <el-option
             v-for="item in options"
             :key="item"
@@ -21,7 +21,8 @@
           range-separator="到"
           start-placeholder="起始日期"
           end-placeholder="结束日期"
-          :picker-options="pickerOptions"
+          :disabled-date="disabledDate"
+          :editable="false"
         />
       </div>
     </div>
@@ -93,14 +94,6 @@ export default {
       limit: 20,
       total: 0,
       newSearch: true,
-      pickerOptions: {
-        disabledDate(time) {
-          // 获取当前日期
-          const today = new Date();
-          // 禁用大于今天的日期
-          return time.getTime() > today.getTime();
-        },
-      },
     };
   },
   mounted() {
@@ -112,6 +105,12 @@ export default {
     handleClick(row) {
       console.log(row);
       window.open(row.link, "_blank");
+    },
+    disabledDate(time) {
+      // 获取当前日期
+      const today = new Date();
+      // 禁用大于今天的日期
+      return time.getTime() > today.getTime();
     },
     handleClick2(row) {
       ElMessageBox.alert(row.summary, row.title, {
@@ -163,7 +162,7 @@ export default {
       console.log(this.currentPage)
       return this.tableData
     }
-  }
+  },
 };
 </script>
 
