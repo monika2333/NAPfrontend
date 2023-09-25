@@ -73,10 +73,7 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
         output: {
           chunkFileNames: "static/js/[name]-[hash].js",
           entryFileNames: "static/js/[name]-[hash].js",
-          assetFileNames: "static/[ext]/[name]-[hash].[ext]",
-            // globals:{
-            //   vue:'Vue'
-            // }
+          assetFileNames: "static/[ext]/[name]-[hash].[ext]"
         }
       }
     },

@@ -9,7 +9,7 @@ export const Login = (data?: object) => {
 //首页
 //热度topN
 export const getTophub = data => {
-  return http.request<any>("post", baseUrlApi("home/tophub"), {data});
+  return http.request<any>("post", baseUrlApi("home/tophub"), { data });
 };
 
 //搜索页
@@ -48,10 +48,14 @@ export const delSourceMedia = data => {
   return http.request<any>("post", baseUrlApi("source/delete"), { data });
 };
 export const delMessage = data => {
-    return http.request<any>("post", baseUrlApi("messageSubscribe/delete"), { data });
+  return http.request<any>("post", baseUrlApi("messageSubscribe/delete"), {
+    data
+  });
 };
 export const addMessage = data => {
-    return http.request<any>("post", baseUrlApi("messageSubscribe/add"), { data });
+  return http.request<any>("post", baseUrlApi("messageSubscribe/add"), {
+    data
+  });
 };
 
 export const handleClick = data => {
