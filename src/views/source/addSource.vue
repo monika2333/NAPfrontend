@@ -1,5 +1,11 @@
 <template>
-    <el-form :model="media" label-width="120px" ref="ruleFormRef">
+    <el-form
+      :model="media"
+      label-width="120px"
+      ref="ruleFormRef"
+      v-loading="loading"
+      element-loading-text="新增中......"
+      element-loading-background="rgba(200, 200, 200, 0.8)">
       <el-form-item label="媒体名称" required error>
         <el-input v-model="media.name" style="width: 500px;"/>
       </el-form-item>
@@ -72,6 +78,7 @@
           comment: '',
         },
         rsstype: 'rsshub路由',
+        loading: false,
       }
     },
     props: ['submitClose'],
@@ -83,6 +90,7 @@
         }
         else
         {
+          this.loading = true
           if(this.rsstype == 'rsshub路由')
           {
             this.media.rssLink = 'http://127.0.0.1:1200/' + this.media.rssLink
@@ -102,11 +110,13 @@
                 }
                 this.media.name = ''
                 this.media.rssLink = ''
+                this.loading = false
               })
             }
             else
             {
               alert('rss校验失败，请检查地址是否准确')
+              this.loading = false
             }
           })
         }
