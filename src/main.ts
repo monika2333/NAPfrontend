@@ -56,5 +56,3 @@ getServerConfig(app).then(async config => {
   // .use(PureDescriptions);
   app.mount("#app");
 });
-
-
