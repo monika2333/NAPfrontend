@@ -3,7 +3,7 @@
     <div style="display: flex; align-items: center">
       <div>
         <span class="searchText">信息来源：</span>
-        <el-select v-model="source" clearable placeholder="请选择" style="width: 250px;">
+        <el-select v-model="source" clearable placeholder="请选择" style="width: 250px;" multiple="true">
           <el-option
             v-for="item in options"
             :key="item"
@@ -14,12 +14,7 @@
         </el-select>
       </div>
       <div style="display: flex; align-items: center; margin-left: 30px;">
-        <span class="searchText">信息数量：</span>
-        <el-slider v-model="nums" max="1000" style="width: 250px;"></el-slider>
-      </div>
-      <div style="display: flex; align-items: center; margin-left: 30px;">
         <span class="searchText">时间范围：</span>
-        <span>{{ time }}</span>
         <el-date-picker
           v-model="time"
           type="daterange"
@@ -27,6 +22,7 @@
           range-separator="到"
           start-placeholder="起始日期"
           end-placeholder="结束日期"
+          :picker-options="pickerOptions"
         />
       </div>
     </div>
@@ -37,7 +33,7 @@
       </div>
       <div>
         <el-button type="primary" @click="getData">查询</el-button>
-        <el-button type="primary">清空条件</el-button>
+        <el-button type="primary" @click="handleClearConditions">清空条件</el-button>
       </div>
     </div>
 
@@ -56,7 +52,7 @@
       <div class="pagination">
         <el-pagination
           background
-          layout="prev, pager, next ,total,sizes"
+          layout="prev, pager, next ,total"
           :total="total"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
@@ -77,14 +73,23 @@ export default {
     return {
       options: [],
       source: '',
-      nums: 20,
+      nums: 0,
       time: '',
       keyword: '',
 
       tableData: [],
-      page: 1,
-      limit: 10,
+      currentPage: 0,
+      limit: 20,
       total: 0,
+      newSearch: true,
+      pickerOptions: {
+        disabledDate(time) {
+          // 获取当前日期
+          const today = new Date();
+          // 禁用大于今天的日期
+          return time.getTime() > today.getTime();
+        },
+      },
     };
   },
   mounted() {
@@ -108,30 +113,48 @@ export default {
     },
     //改变页码
     handleCurrentChange(e){
-      this.page = e;
+      this.currentPage = e;
+      this.getData()
     },
     //改变页数限制
     handleSizeChange(e){
       this.limit = e;
     },
-
+    handleClearConditions() {
+      this.newSearch = !this.newSearch
+    },
     getData() {
       // console.log(this.time)
       // console.log(this.keyword)
-      getNews({'source': this.source, 'limit': this.nums, 'time': this.time, 'keyword': this.keyword}).then(res => {
-        console.log(res)
-        this.tableData = res.data
-        this.total = this.tableData.length
-      });
+      // 新查询
+      if (this.newSearch) {
+        getNews({'source': this.source, 'limit': this.limit, 'time': this.time, 'keyword': this.keyword}).then(res => {
+          this.newSearch = !this.newSearch
+          this.total = res.data.count
+          // console.log(res)
+          this.tableData = res.data.ret
+          this.total = res.data.count
+        });
+      }else{
+        // 继续分页查询
+        getNews({'source': this.source, 'limit': this.limit, 'time': this.time, 'keyword': this.keyword, "current_page": this.currentPage}).then(res => {
+
+          // console.log(res)
+          this.tableData = res.data.ret
+          this.total = res.data.count
+        });
+      }
     },
   },
   computed: {
-    showData(){
-      return this.tableData.filter(
-        (item, index) =>
-          index < this.page * this.limit &&
-          index >= this.limit * (this.page - 1)
-      );
+    showData() {
+      // return this.tableData.filter(
+      //   (item, index) =>
+      //     index < this.page * this.limit &&
+      //     index >= this.limit * (this.page - 1)
+      // );
+      console.log(this.currentPage)
+      return this.tableData
     }
   },
 }
