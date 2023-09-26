@@ -57,16 +57,18 @@
 
     <div style="margin-top: 30px">
       <el-table :data="showData" stripe style="width: 100%">
-        <el-table-column prop="time" label="日期（UTC+8）" width="180" />
-        <el-table-column prop="column" label="频道" width="180" />
-        <el-table-column prop="title" label="标题" />
+        <el-table-column prop="time" label="日期（UTC+8）" width="180"/>
+        <el-table-column prop="column" label="频道" width="180"/>
+        <el-table-column prop="title" label="标题"/>
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >跳转</el-button
+            >跳转
+            </el-button
             >
             <el-button @click="handleClick2(scope.row)" type="text" size="small"
-              >简略信息</el-button
+            >简略信息
+            </el-button
             >
           </template>
         </el-table-column>
@@ -78,6 +80,7 @@
           :total="total"
           @current-change="handleCurrentChange"
           @size-change="handleSizeChange"
+          :default-page-size="20"
         />
       </div>
     </div>
@@ -85,9 +88,9 @@
 </template>
 
 <script>
-import { ElMessageBox } from "element-plus";
-import { getNews } from "@/api/user";
-import { getSource } from "@/api/user";
+import {ElMessageBox, ElMessage} from "element-plus";
+import {getNews} from "@/api/user";
+import {getSource} from "@/api/user";
 
 export default {
   data() {
@@ -126,8 +129,14 @@ export default {
         dangerouslyUseHTMLString: true
       });
     },
+    showWarning(content) {
+      return ElMessage({
+        message: content,
+        type: 'warning'
+      });
+    },
     //改变页码
-    handleCurrentChange(e){
+    handleCurrentChange(e) {
       this.currentPage = e;
       this.getData()
     },
@@ -142,18 +151,41 @@ export default {
       this.source = '';
     },
     getData() {
+      if (this.keyword.length === 0) {
+        this.showWarning('请填入关键字');
+        return
+      }
+      if (this.source === '') {
+        this.showWarning('请选择新闻来源');
+        return;
+      }
+      if (this.time === '') {
+        this.showWarning('请选择查询时间范围');
+        return;
+      }
       // 新查询
       if (this.newSearch) {
-        getNews({'source': this.source, 'limit': this.limit, 'time': this.time, 'keyword': this.keyword.map(w => w.trim())}).then(res => {
+        getNews({
+          'source': this.source,
+          'limit': this.limit,
+          'time': this.time,
+          'keyword': this.keyword.map(w => w.trim())
+        }).then(res => {
           this.newSearch = !this.newSearch
           this.total = res.data.count
           // console.log(res)
           this.tableData = res.data.ret
           this.total = res.data.count
         });
-      }else{
+      } else {
         // 继续分页查询
-        getNews({'source': this.source, 'limit': this.limit, 'time': this.time, 'keyword': this.keyword, "current_page": this.currentPage}).then(res => {
+        getNews({
+          'source': this.source,
+          'limit': this.limit,
+          'time': this.time,
+          'keyword': this.keyword,
+          "current_page": this.currentPage
+        }).then(res => {
 
           // console.log(res)
           this.tableData = res.data.ret
