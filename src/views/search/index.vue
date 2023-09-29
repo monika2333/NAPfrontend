@@ -54,7 +54,7 @@
                      type="primary">
           <span class="el-dropdown-link">
             导  出
-            <el-icon class="el-icon--right"><arrow-down/></el-icon>
+            <el-icon class="el-icon--right"><ArrowDown/></el-icon>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -65,7 +65,7 @@
           </template>
         </el-dropdown>
         <span>&NonBreakingSpace;</span>
-        <el-button type="primary" @click="getData">查询</el-button>
+        <el-button type="primary" @click="getData(true)">查询</el-button>
         <el-button type="primary" @click="handleClearConditions">清空条件</el-button>
       </div>
     </div>
@@ -106,7 +106,7 @@
 import {ElMessageBox, ElMessage} from "element-plus";
 import {getNews, exportData} from "@/api/user";
 import {getSource} from "@/api/user";
-import {ArrowDown} from '@element-plus/icons-vue'
+import {ArrowDown} from '@element-plus/icons-vue';
 
 export default {
   data() {
@@ -122,7 +122,6 @@ export default {
       currentPage: 0,
       limit: 20,
       total: 0,
-      newSearch: false,
     };
   },
   mounted() {
@@ -138,6 +137,7 @@ export default {
     handleCommand(command) {
       this.exportType = command;
     },
+    // 导出数据
     handleDropdownMenuClick() {
       if (!this.total) {
         this.showWarning('请先查询');
@@ -177,6 +177,7 @@ export default {
         closeOnPressEscape: true,
       });
     },
+    // 封装用户提示
     showWarning(content) {
       return ElMessage({
         message: content,
@@ -186,19 +187,19 @@ export default {
     //改变页码
     handleCurrentChange(e) {
       this.currentPage = e;
-      this.getData()
+      this.getData(false)
     },
     //改变页数限制
     handleSizeChange(e) {
       this.limit = e;
     },
+    // 清空条件
     handleClearConditions() {
-      this.newSearch = !this.newSearch;
       this.keyword = [];
       this.time = '';
       this.source = '';
     },
-    getData() {
+    getData(newSearch) {
       if (this.keyword.length === 0) {
         this.showWarning('请填入关键字');
         return
@@ -211,30 +212,34 @@ export default {
         this.showWarning('请选择查询时间范围');
         return;
       }
-      // 新查询
-      getNews({
+      let data = {
         'source': this.source,
         'limit': this.limit,
         'time': this.time,
-        'keyword': this.keyword,
-        "current_page": this.currentPage
-      }).then(res => {
+        'keyword': this.keyword
+      }
+      if (newSearch) {
+        data.current_page = 0;
+        if (this.tableData) {
+          this.tableData = [];
+          this.total = 0;
+          this.currentPage = 0;
+        }
+      } else {
+        data.current_page = this.currentPage;
+      }
+      getNews(data).then(res => {
 
         // console.log(res)
-        this.tableData = res.data.ret
-        this.total = res.data.count
+        this.tableData = res.data.ret;
+        this.total = res.data.count;
       });
     },
   },
   computed: {
     showData() {
-      // return this.tableData.filter(
-      //   (item, index) =>
-      //     index < this.page * this.limit &&
-      //     index >= this.limit * (this.page - 1)
-      // );
-      console.log(this.currentPage)
-      return this.tableData
+      console.log(this.currentPage);
+      return this.tableData;
     }
   },
 };
@@ -247,10 +252,5 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.el-message-box__headerbtn {
-  position: sticky;
-  top: 0;
 }
 </style>
