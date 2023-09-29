@@ -17,6 +17,12 @@ export const getTophub = data => {
 export const getNews = data => {
   return http.request<any>("post", baseUrlApi("newsData/news"), { data });
 };
+
+// 导出到excel
+export const exportData = data => {
+  return http.request<any>("post", baseUrlApi("/newsData/exportNews"), { data }, {responseType: 'blob'})
+}
+
 //媒体下拉框选项
 export const getSource = () => {
   return http.request<any>("get", baseUrlApi("baseData/allSource"));

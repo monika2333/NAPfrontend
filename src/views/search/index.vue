@@ -50,6 +50,21 @@
         </el-select>
       </div>
       <div>
+        <el-dropdown @click="handleDropdownMenuClick" @command="handleCommand" size="default" split-button
+                     type="primary">
+          <span class="el-dropdown-link">
+            导  出
+            <el-icon class="el-icon--right"><arrow-down/></el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="excel">Excel</el-dropdown-item>
+              <el-dropdown-item command="csv">CSV</el-dropdown-item>
+              <el-dropdown-item command="json">Json</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <span>&NonBreakingSpace;</span>
         <el-button type="primary" @click="getData">查询</el-button>
         <el-button type="primary" @click="handleClearConditions">清空条件</el-button>
       </div>
@@ -89,8 +104,9 @@
 
 <script>
 import {ElMessageBox, ElMessage} from "element-plus";
-import {getNews} from "@/api/user";
+import {getNews, exportData} from "@/api/user";
 import {getSource} from "@/api/user";
+import {ArrowDown} from '@element-plus/icons-vue'
 
 export default {
   data() {
@@ -100,12 +116,13 @@ export default {
       nums: 0,
       time: '',
       keyword: [],
+      exportType: 'excel',
 
       tableData: [],
       currentPage: 0,
       limit: 20,
       total: 0,
-      newSearch: true,
+      newSearch: false,
     };
   },
   mounted() {
@@ -115,8 +132,38 @@ export default {
   },
   methods: {
     handleClick(row) {
-      console.log(row);
+      // console.log(row);
       window.open(row.link, "_blank");
+    },
+    handleCommand(command) {
+      this.exportType = command;
+    },
+    handleDropdownMenuClick() {
+      if (!this.total) {
+        this.showWarning('请先查询');
+        return;
+      }
+      exportData({
+        'source': this.source,
+        'time': this.time,
+        'keyword': this.keyword,
+        'exportType': this.exportType,
+      }).then(res => {
+        let filename;
+        if (this.exportType === 'excel') {
+          filename = "export" + ".xlsx";
+        }else if (this.exportType === 'csv') {
+          filename = "export" + ".csv";
+        } else {
+          filename = "export" + ".json"
+        }
+        const url = window.URL.createObjectURL(new Blob([res]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+      });
     },
     disabledDate(time) {
       // 获取当前日期
@@ -126,7 +173,8 @@ export default {
     },
     handleClick2(row) {
       ElMessageBox.alert(row.summary, row.title, {
-        dangerouslyUseHTMLString: true
+        dangerouslyUseHTMLString: true,
+        closeOnPressEscape: true,
       });
     },
     showWarning(content) {
@@ -164,34 +212,18 @@ export default {
         return;
       }
       // 新查询
-      if (this.newSearch) {
-        getNews({
-          'source': this.source,
-          'limit': this.limit,
-          'time': this.time,
-          'keyword': this.keyword.map(w => w.trim())
-        }).then(res => {
-          this.newSearch = !this.newSearch
-          this.total = res.data.count
-          // console.log(res)
-          this.tableData = res.data.ret
-          this.total = res.data.count
-        });
-      } else {
-        // 继续分页查询
-        getNews({
-          'source': this.source,
-          'limit': this.limit,
-          'time': this.time,
-          'keyword': this.keyword,
-          "current_page": this.currentPage
-        }).then(res => {
+      getNews({
+        'source': this.source,
+        'limit': this.limit,
+        'time': this.time,
+        'keyword': this.keyword,
+        "current_page": this.currentPage
+      }).then(res => {
 
-          // console.log(res)
-          this.tableData = res.data.ret
-          this.total = res.data.count
-        });
-      }
+        // console.log(res)
+        this.tableData = res.data.ret
+        this.total = res.data.count
+      });
     },
   },
   computed: {
@@ -217,4 +249,8 @@ export default {
   align-items: center;
 }
 
+.el-message-box__headerbtn {
+  position: sticky;
+  top: 0;
+}
 </style>
