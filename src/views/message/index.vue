@@ -35,22 +35,22 @@
             <el-radio :label="1">邮箱</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item ref="number" label="账号" v-if="form.type == 0">
+        <el-form-item ref="number" label="账号" v-if="form.type == 0" :required="true">
           <el-input v-model="form.phone" placeholder="请输入账号" />
         </el-form-item>
-        <el-form-item ref="number" label="邮箱" v-if="form.type == 1">
+        <el-form-item ref="number" label="邮箱" v-if="form.type == 1" :required="true">
           <el-input v-model="form.email" placeholder="请输入邮箱" />
         </el-form-item>
         <el-form-item
           label="订阅地址"
           :rules="{ required: true, message: '请选择订阅地址' }"
         >
-          <div class="m-4">
+          <div class="m-4" style="width: 100%">
             <el-select
               v-model="selectedValue"
               multiple
               placeholder="请选择订阅地址"
-              style="width: 400px"
+              style="width: 100%"
             >
               <el-option
                 v-for="item in sources"
@@ -60,6 +60,8 @@
               />
             </el-select>
           </div>
+          <!--        </el-form-item>-->
+          <!--        <el-form-item>-->
           <el-input
             v-model="form.source"
             :autosize="{ minRows: 1, maxRows: 3 }"
@@ -69,7 +71,7 @@
             style="margin-top: 10px"
           />
         </el-form-item>
-        <el-form-item ref="text" label="关键词">
+        <el-form-item ref="text" label="关键词" :required="true">
           <el-input
             v-model="form.keyword"
             :autosize="{ minRows: 3, maxRows: 3 }"
@@ -94,6 +96,7 @@ import { http } from "@/utils/http";
 import { baseUrlApi } from "@/api/utils";
 import { delMessage } from "@/api/user";
 import { addMessage } from "@/api/user";
+import {valid} from "mockjs";
 export default {
   data() {
     return {
@@ -107,31 +110,27 @@ export default {
         keyword: "",
         source: ""
       },
-      selectedValue: null,
-      list: [], //列表信息
-      value1: [],
-      value2: [],
-      value3: [],
-      value4: [],
+      selectedValue: [],
+      //列表信息
       sources: [
         {
-          value: "Option1",
+          value: "ABC News",
           label: "ABC News"
         },
         {
-          value: "Option2",
+          value: "AP News",
           label: "AP News"
         },
         {
-          value: "Option3",
+          value: "BBC",
           label: "BBC"
         },
         {
-          value: "Option4",
+          value: "CBC",
           label: "CBC"
         },
         {
-          value: "Option5",
+          value: "CGTN",
           label: "CGTN"
         }
       ]
@@ -146,6 +145,8 @@ export default {
     },
     clear() {
       this.form = {};
+      this.form.type = 0;
+      this.selectedValue = [];
     },
     //列表
     getList() {
@@ -157,25 +158,30 @@ export default {
           }
         });
     },
-    add() {
-      console.log(this.form);
+    async add() {
       const param = {
         id: this.getuuid(),
         type: this.form.type,
         phone: this.form.phone ? this.form.phone : "",
         email: this.form.email ? this.form.email : "",
         keywords: this.form.keyword.split(","),
-        source: this.form.source.split(",")
+        source:
+          this.form.source.split(",") + "," + this.selectedValue.toString()
       };
-      addMessage(param).then(res => {
-        if (res.code == 0) {
-          alert("添加成功");
-          this.dialogShow = false;
-          this.getList();
-        } else {
-          alert("添加失败");
-        }
-      });
+      console.log(param)
+      if((this.form.phone != '' && this.form.email != '') || (this.form.phone != '' && this.form.email == '') ||this.form.keywords != '' ||this.form.source != '' ){
+        addMessage(param).then(res => {
+          if (res.code == 0) {
+            alert("添加成功");
+            this.dialogShow = false;
+            this.getList();
+          } else {
+            alert("添加失败");
+          }
+        })
+      }else{
+        alert("请输入必填");
+      }
     },
     handleClick(record) {
       //弹框询问用户是否删除数据
