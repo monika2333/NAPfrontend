@@ -53,6 +53,11 @@ export const checkRss = data => {
 export const delSourceMedia = data => {
   return http.request<any>("post", baseUrlApi("source/delete"), { data });
 };
+//更新rss
+export const updateSourceMedia = data => {
+  return http.request<any>("post", baseUrlApi("source/update"), { data });
+};
+
 export const delMessage = data => {
   return http.request<any>("post", baseUrlApi("messageSubscribe/delete"), {
     data

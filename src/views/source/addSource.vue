@@ -54,6 +54,9 @@
           <el-radio label="否" />
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="时区">
+        <el-input-number v-model="media.timeZone" :step="1" step-strictly max="12" min="-12"/>
+      </el-form-item>
   
       <el-form-item>
         <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -75,7 +78,7 @@
           rssLink: '',
           needTag: '否',
           needAuthor: '否',
-          comment: '',
+          timeZone: 0,
         },
         rsstype: 'rsshub路由',
         loading: false,

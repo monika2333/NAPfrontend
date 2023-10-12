@@ -34,7 +34,7 @@
             direction="ltr"
             size="50%"
             :before-close="handleClose2">
-            <UpdateSource ref="update" :dataNeedUpdate="dataNeedUpdate" :handleClose2="handleClose2"></UpdateSource>
+            <UpdateSource ref="update" :dataNeedUpdate="dataNeedUpdate" :submitClose2="submitClose2"></UpdateSource>
         </el-drawer>
     </div>
 </template>
@@ -102,6 +102,9 @@ export default {
             getMediaList().then(res => {
                 this.tableData = res.data
             })
+            this.$refs.drawer.close()
+            this.$refs.add.media.name = ''
+            this.$refs.add.media.rssLink = ''
         },
         handleClose2(){
             ElMessageBox.confirm('确定要关闭吗？（你将失去所填内容）')
@@ -110,12 +113,18 @@ export default {
             })
             .catch(() => {})
         },
+        submitClose2(){
+            getMediaList().then(res => {
+                this.tableData = res.data
+            })
+            this.$refs.drawer2.close()
+        },
         openUpdateDrawer(){
             this.drawer2 = true
         },
         getCardInfo(data){
             this.dataNeedUpdate = data
-            console.log(this.dataNeedUpdate)
+            // console.log(this.dataNeedUpdate)
         }
     }
 }
@@ -146,6 +155,12 @@ import updateSourceVue from './updateSource.vue';
     border-radius: 30px;
 }
 :deep(.el-input-group__prepend){
+    border-radius: 30px;
+}
+:deep(.el-input-number__increase){
+    border-radius: 30px;
+}
+:deep(.el-input-number__decrease){
     border-radius: 30px;
 }
 </style>
