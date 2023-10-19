@@ -69,7 +69,8 @@ const logoVal = ref($storage.configure?.showLogo ?? true);
 const settings = reactive({
   greyVal: $storage.configure.grey,
   weakVal: $storage.configure.weak,
-  tabsVal: $storage.configure.hideTabs,
+  //tabsVal: $storage.configure.hideTabs,
+  tabsVal: true, // 默认关闭标签
   showLogo: $storage.configure.showLogo,
   showModel: $storage.configure.showModel,
   multiTagsCache: $storage.configure.multiTagsCache

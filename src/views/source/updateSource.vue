@@ -40,6 +40,9 @@
           <el-radio label="否" />
         </el-radio-group>
       </el-form-item>
+      <el-form-item label="时区">
+        <el-input-number v-model="media.timeZone" :step="1" step-strictly max="12" min="-12"/>
+      </el-form-item>
   
       <el-form-item>
         <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -48,11 +51,13 @@
   </template>
   
   <script>
-  import {checkRss, addSourceMedia} from '@/api/user'
+  import {checkRss, updateSourceMedia} from '@/api/user'
+  
   export default {
     data() {
       return {
         media: {
+          _id: '',
           name: '',
           type: '其他',
           link: '',
@@ -61,11 +66,11 @@
           rssLink: '',
           needTag: '否',
           needAuthor: '否',
-          comment: '',
+          timeZone: 0,
         },
       }
     },
-    props: ['dataNeedUpdate', 'handleClose2'],
+    props: ['dataNeedUpdate', 'submitClose2'],
     mounted(){
       this.putDataIntoView()
     },
@@ -88,7 +93,17 @@
           checkRss({rss: this.media.rssLink}).then(res=>{
             if(res.code==0)
             {
-              this.handleClose2()
+              updateSourceMedia(this.media).then(res=>{
+                if(res.code==0)
+                {
+                  alert('修改成功')
+                  this.submitClose2()
+                }
+                else
+                {
+                  alert('修改失败')
+                }
+              })
             }
             else
             {
@@ -98,6 +113,7 @@
         }
       },
       putDataIntoView(){
+        this.media._id = this.dataNeedUpdate._id
         this.media.name = this.dataNeedUpdate.mediaName
         this.media.type = this.dataNeedUpdate.mediaType
         this.media.link = this.dataNeedUpdate.mediaLink
@@ -106,7 +122,7 @@
         this.media.rssLink = this.dataNeedUpdate.rssLink
         this.media.needTag = '否'
         this.media.needAuthor = '否'
-        this.media.comment = this.dataNeedUpdate.comment
+        this.media.timeZone = this.dataNeedUpdate.timeZone
       }
     },
   }
