@@ -17,22 +17,8 @@
             />
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">时间范围</span>
-            <el-date-picker
-              v-model="time"
-              type="daterange"
-              unlink-panels
-              range-separator="到"
-              start-placeholder="起始日期"
-              end-placeholder="结束日期"
-              :disabled-date="disabledDate"
-              :editable="false"
-              style="margin-left: 15px; width: 300px;"
-            />
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
             <span class="searchText">信息来源</span>
-            <el-select v-model="source" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
+            <el-select v-model="platform" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
               <el-option
                 v-for="item in options"
                 :key="item"
@@ -71,7 +57,7 @@
       <div class="searchResults">
         <el-table :data="showData" stripe style="width: 100%">
           <el-table-column prop="time" label="日期（UTC+8）" width="180"/>
-          <el-table-column prop="column" label="频道" width="180"/>
+          <el-table-column prop="type" label="频道" width="180"/>
           <el-table-column prop="title" label="标题"/>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
@@ -101,21 +87,21 @@
   </template>
   
   <script setup>
-  import {Show, Refresh, Download} from '@element-plus/icons-vue';
+  import {Search, Refresh, Download} from '@element-plus/icons-vue';
   </script>
   
   <script>
   import {ElMessageBox, ElMessage} from "element-plus";
-  import {getNews, exportData} from "@/api/user";
-  import {getSource} from "@/api/user";
+  import {getInfos, exportData} from "@/api/user";
+  import {getPlatform} from "@/api/user";
   
   export default {
     data() {
       return {
         options: [],
-        source: '',
+        platform: '',
         nums: 0,
-        time: '',
+        // time: '',
         keyword: [],
         exportType: 'excel',
   
@@ -126,7 +112,7 @@
       };
     },
     mounted() {
-      getSource().then(res => {
+      getPlatform().then(res => {
         this.options = res.data;
       });
     },
@@ -145,8 +131,8 @@
           return;
         }
         exportData({
-          'source': this.source,
-          'time': this.time,
+          'platform': this.platform,
+        //   'time': this.time,
           'keyword': this.keyword,
           'exportType': this.exportType,
         }).then(res => {
@@ -173,7 +159,7 @@
         return time.getTime() > today.getTime();
       },
       handleClick2(row) {
-        ElMessageBox.alert(row.summary, row.title, {
+        ElMessageBox.alert(row.text, row.title, {
           dangerouslyUseHTMLString: true,
           closeOnPressEscape: true,
         });
@@ -198,25 +184,25 @@
       handleClearConditions() {
         this.keyword = [];
         this.time = '';
-        this.source = '';
+        this.platform = '';
       },
       getData(newSearch) {
         if (this.keyword.length === 0) {
           this.showWarning('请填入关键字');
           return
         }
-        if (this.source === '') {
+        if (this.platform === '') {
           this.showWarning('请选择新闻来源');
           return;
         }
-        if (this.time === '') {
-          this.showWarning('请选择查询时间范围');
-          return;
-        }
+        // if (this.time === '') {
+        //   this.showWarning('请选择查询时间范围');
+        //   return;
+        // }
         let data = {
-          'source': this.source,
+          'platform': this.platform,
           'limit': this.limit,
-          'time': this.time,
+        //   'time': this.time,
           'keyword': this.keyword
         }
         if (newSearch) {
@@ -229,7 +215,7 @@
         } else {
           data.current_page = this.currentPage;
         }
-        getNews(data).then(res => {
+        getInfos(data).then(res => {
   
           // console.log(res)
           this.tableData = res.data.ret;

@@ -36,6 +36,22 @@ export const getLanguageNum = () => {
   return http.request<any>("get", baseUrlApi("baseData/allLanguageNum"));
 };
 
+//新闻展示
+export const getInfos = data => {
+  return http.request<any>("post", baseUrlApi("twInfo/infos"), { data });
+};
+
+//台湾媒体列表
+export const getPlatform = () => {
+  return http.request<any>("get", baseUrlApi("twInfo/allPlatform"));
+};
+
+// 导出台湾信息
+export const exportInfos = data => {
+  return http.request<any>("post", baseUrlApi("twInfo/exportInfos"), { data }, {responseType: 'blob'})
+}
+
+
 //增删媒体源
 //媒体源列表
 export const getMediaList = () => {
