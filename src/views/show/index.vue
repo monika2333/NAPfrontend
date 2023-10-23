@@ -92,7 +92,7 @@
   
   <script>
   import {ElMessageBox, ElMessage} from "element-plus";
-  import {getInfos, exportData} from "@/api/user";
+  import {getInfos, exportInfos} from "@/api/user";
   import {getPlatform} from "@/api/user";
   
   export default {
@@ -130,7 +130,7 @@
           this.showWarning('请先查询');
           return;
         }
-        exportData({
+        exportInfos({
           'platform': this.platform,
         //   'time': this.time,
           'keyword': this.keyword,
