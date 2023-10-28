@@ -2,7 +2,7 @@ export default {
   path: "/search",
   meta: {
     icon: "material-symbols:manage-search",
-    title: "新闻搜索"
+    title: "新闻信息"
   },
   children: [
     {
@@ -19,6 +19,14 @@ export default {
       component: () => import("@/views/search/taiwan.vue"),
       meta: {
         title: "台湾新闻源"
+      }
+    },
+    {
+      path: "/show",
+      name: "Show",
+      component: () => import("@/views/show/index.vue"),
+      meta: {
+        title: "新闻展示"
       }
     }
   ]
