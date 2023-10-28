@@ -6,11 +6,19 @@ export default {
   },
   children: [
     {
-      path: "/search",
-      name: "Search",
+      path: "/search/baseDB",
+      name: "SearchBaseDB",
       component: () => import("@/views/search/index.vue"),
       meta: {
-        title: "新闻搜索"
+        title: "境内外新闻源"
+      }
+    },
+    {
+      path: "/search/taiwanDB",
+      name: "SearchTaiwanDB",
+      component: () => import("@/views/search/taiwan.vue"),
+      meta: {
+        title: "台湾新闻源"
       }
     }
   ]
