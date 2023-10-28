@@ -20,14 +20,6 @@ export default {
       meta: {
         title: "台湾新闻源"
       }
-    },
-    {
-      path: "/show",
-      name: "Show",
-      component: () => import("@/views/show/index.vue"),
-      meta: {
-        title: "新闻展示"
-      }
     }
   ]
 };
