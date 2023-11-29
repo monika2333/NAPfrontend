@@ -73,6 +73,8 @@
         <el-table-column prop="time" label="日期（UTC+8）" width="180"/>
         <el-table-column prop="column" label="频道" width="180"/>
         <el-table-column prop="title" label="标题"/>
+        <!-- <el-table-column prop="keywords" label="关键字"/>
+        <el-table-column prop="new_summary" label="摘要"/> -->
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small"

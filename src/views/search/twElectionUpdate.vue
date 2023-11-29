@@ -88,6 +88,19 @@
               style="margin-left: 15px; width: 300px;"
             />
           </el-col>
+          <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+          <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;关键词</span>
+          <el-select
+            v-model="keywords"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="请输入关键字"
+            style="margin-left: 15px; width: 300px;"
+          />
+        </el-col>
         </el-row>
         <el-row class="searchConditions">
           
@@ -118,10 +131,9 @@
       <div class="searchResults">
         <el-table :data="showData" stripe style="width: 100%">
           <el-table-column prop="time" label="新闻发布日期（UTC+8）" width="180"/>
-          <el-table-column prop="first_fetch_time" label="首次采集日期（UTC+8）" width="180"/>
           <el-table-column prop="end_fetch_time" label="末次采集日期（UTC+8）" width="180"/>
           <el-table-column prop="fetch_number" label="采集次数"/>
-          <el-table-column prop="title" label="标题"/>
+          <el-table-column prop="simple_title" label="标题"/>
           <!-- <el-table-column prop="text" label="正文" height="10"/> -->
           <el-table-column prop="type" label="分类" width="180">
             <template  #default="scope">
@@ -211,7 +223,7 @@
         end_fetch_time: '',
         level: [],
         type: [],
-        keyword: [],
+        keywords: [],
         exportType: 'excel',
   
         tableData: [],
@@ -273,8 +285,9 @@
           'publish_time': this.publish_time,
           'first_fetch_time': this.first_fetch_time,
           'end_fetch_time': this.end_fetch_time,
-        //   'keyword': this.keyword,
+          'keywords': this.keywords,
           'exportType': this.exportType,
+          'search_type': 'update'
         }).then(res => {
           let filename;
           if (this.exportType === 'excel') {
@@ -305,7 +318,7 @@
         });
       },
       handleClick3(row) {
-        ElMessageBox.alert(row.text, row.title, {
+        ElMessageBox.alert(row.simple_text, row.simple_title, {
           dangerouslyUseHTMLString: true,
           closeOnPressEscape: true,
         });
@@ -352,7 +365,9 @@
           'publish_time': this.publish_time,
           'first_fetch_time': this.first_fetch_time,
           'end_fetch_time': this.end_fetch_time,
-          'limit': this.limit
+          'limit': this.limit,
+          'keywords': this.keywords,
+          'search_type': 'update'
         }
         if (newSearch) {
           data.current_page = 0;
