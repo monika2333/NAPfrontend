@@ -17,7 +17,7 @@
             />
           </el-col> -->
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">&emsp;&emsp;&emsp;&emsp;新闻来源</span>
+            <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;新闻来源</span>
             <el-select v-model="source" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
               <el-option
                 v-for="item in options"
@@ -28,7 +28,7 @@
             </el-select>
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">&emsp;&emsp;&emsp;&emsp;重要程度</span>
+            <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;重要程度</span>
             <el-select v-model="level" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
               <el-option
                 v-for="item in levels"
@@ -39,7 +39,7 @@
             </el-select>
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">&emsp;&emsp;&emsp;&emsp;新闻分类</span>
+            <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;新闻分类</span>
             <el-select v-model="type" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
               <el-option
                 v-for="item in types"
@@ -89,7 +89,7 @@
             />
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-          <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;关键词</span>
+          <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;关键词</span>
           <el-select
             v-model="keywords"
             multiple
@@ -103,7 +103,7 @@
         </el-col>
         </el-row>
         <el-row class="searchConditions">
-          
+
         </el-row>
       </div>
       <div class="searchButtons">
@@ -131,7 +131,7 @@
       <div class="searchResults">
         <el-table :data="showData" stripe style="width: 100%">
           <el-table-column prop="time" label="新闻发布日期（UTC+8）" width="180"/>
-          <el-table-column prop="fetch_number" label="采集次数"/>
+          <el-table-column prop="fetch_number" label="采集次数" width="120"/>
           <el-table-column prop="simple_title" label="标题"/>
           <!-- <el-table-column prop="text" label="正文" height="10"/> -->
           <el-table-column prop="type" label="分类"/>
@@ -166,16 +166,16 @@
       </div>
     </div>
   </template>
-  
+
   <script setup>
   import {Search, Refresh, Download} from '@element-plus/icons-vue';
   </script>
-  
+
   <script>
   import {ElMessageBox, ElMessage} from "element-plus";
   import {getTwElectionList, exportTwElection} from "@/api/user";
   import {getTwElectionSource, updateTwElectionInfo} from "@/api/user";
-  
+
   export default {
     data() {
       return {
@@ -201,7 +201,7 @@
         type: [],
         keywords: [],
         exportType: 'excel',
-  
+
         tableData: [],
         currentPage: 0,
         limit: 20,
@@ -356,7 +356,7 @@
           data.current_page = this.currentPage;
         }
         getTwElectionList(data).then(res => {
-  
+
           // console.log(res)
           this.tableData = res.data.ret;
           this.total = res.data.count;
@@ -371,7 +371,7 @@
     },
   };
   </script>
-  
+
   <style scoped>
   .pagination {
     width: 100%;
@@ -408,4 +408,3 @@
     margin-top: 20px
   }
   </style>
-  
