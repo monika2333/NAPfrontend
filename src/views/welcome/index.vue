@@ -1,6 +1,8 @@
 <template>
   <div>
     <div>
+      <el-row :gutter="18" style="margin-top: 8px">
+          <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
       <el-dropdown @command="addMedia">
         <span class="el-dropdown-link"
           >平台榜单
@@ -33,6 +35,7 @@
       <div class="scVue" v-if="dropdownMeVisabled == 'wb'">
         <scrollVue :source="'微博'" :column="['排行']" />
       </div>
+    </el-col></el-row>
     </div>
     <div>
       <div style="margin-top: 10px">

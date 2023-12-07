@@ -16,7 +16,6 @@
                 <li class="item" v-for="(item, index) in top" :key="index">
                     <span class="rank">{{ item.rank }}</span>
                     <span class="title">{{ item.title }}</span>
-                    <span class="degree">{{ item.degree }}</span>
                 </li>
             </el-scrollbar>
         </ul>
@@ -45,6 +44,7 @@ export default {
         getTophub({source: this.source, column: this.value}).then(res=>{
             this.top = res.data
         })
+        console.log(this.top)
     },
     watch:{
         value(){
