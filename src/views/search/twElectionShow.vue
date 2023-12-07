@@ -134,8 +134,8 @@
           <el-table-column prop="fetch_number" label="采集次数" width="120"/>
           <el-table-column prop="simple_title" label="标题"/>
           <!-- <el-table-column prop="text" label="正文" height="10"/> -->
-          <el-table-column prop="type" label="分类"/>
-          <el-table-column prop="level" label="重要程度"/>
+          <el-table-column prop="type" label="分类" width="180"/>
+          <el-table-column prop="level" label="重要程度" width="180"/>
           <el-table-column fixed="right" label="操作" width="200">
             <template #default="scope">
               <el-button @click="handleClick(scope.row)" type="text" size="small"
