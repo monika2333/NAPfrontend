@@ -51,6 +51,27 @@ export const exportInfos = data => {
   return http.request<any>("post", baseUrlApi("twInfo/exportInfos"), { data }, {responseType: 'blob'})
 }
 
+//台湾大选新闻展示
+export const getTwElectionList = data => {
+  return http.request<any>("post", baseUrlApi("twElection/list"), { data });
+};
+
+//台湾大选媒体列表
+export const getTwElectionSource = () => {
+  return http.request<any>("get", baseUrlApi("twElection/allSource"));
+};
+
+// 导出台湾大选信息
+export const exportTwElection = data => {
+  return http.request<any>("post", baseUrlApi("twElection/exportInfos"), { data }, {responseType: 'blob'})
+}
+
+// 导出台湾大选信息
+export const updateTwElectionInfo = data => {
+  return http.request<any>("post", baseUrlApi("twElection/update"), { data }, {responseType: 'blob'})
+}
+
+
 
 //增删媒体源
 //媒体源列表

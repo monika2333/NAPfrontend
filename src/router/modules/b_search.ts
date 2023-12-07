@@ -20,6 +20,22 @@ export default {
       meta: {
         title: "台湾新闻源"
       }
+    },
+    {
+      path: "/search/twElectionDB",
+      name: "SearchTwElectionDB",
+      component: () => import("@/views/search/twElectionShow.vue"),
+      meta: {
+        title: "台湾大选新闻展示"
+      }
+    },
+    {
+      path: "/search/twElectionUpdate",
+      name: "SearchTwElectionUpdate",
+      component: () => import("@/views/search/twElectionUpdate.vue"),
+      meta: {
+        title: "台湾大选新闻更新"
+      }
     }
   ]
 };
