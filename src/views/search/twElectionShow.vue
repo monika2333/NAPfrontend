@@ -17,32 +17,10 @@
             />
           </el-col> -->
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;新闻来源</span>
+            <span class="searchText">新闻来源</span>
             <el-select v-model="source" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
               <el-option
                 v-for="item in options"
-                :key="item"
-                :label="item"
-                :value="item"
-              />
-            </el-select>
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;重要程度</span>
-            <el-select v-model="level" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
-              <el-option
-                v-for="item in levels"
-                :key="item"
-                :label="item"
-                :value="item"
-              />
-            </el-select>
-          </el-col>
-          <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;新闻分类</span>
-            <el-select v-model="type" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
-              <el-option
-                v-for="item in types"
                 :key="item"
                 :label="item"
                 :value="item"
@@ -63,44 +41,79 @@
             />
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">首次采集时间范围</span>
-            <el-date-picker
-              v-model="first_fetch_time"
-              type="daterange"
-              unlink-panels
-              range-separator="到"
-              start-placeholder="起始日期"
-              end-placeholder="结束日期"
-              :editable="false"
-              style="margin-left: 15px; width: 300px;"
+            <span class="searchText">关键词</span>
+            <el-select
+              v-model="keywords"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              :reserve-keyword="false"
+              placeholder="请输入关键字"
+              style="margin-left: 15px; width: 300px"
             />
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-            <span class="searchText">末次采集时间范围</span>
-            <el-date-picker
-              v-model="end_fetch_time"
-              type="daterange"
-              unlink-panels
-              range-separator="到"
-              start-placeholder="起始日期"
-              end-placeholder="结束日期"
-              :editable="false"
-              style="margin-left: 15px; width: 300px;"
-            />
+            <span class="searchText">重要程度</span>
+            <el-select v-model="level" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
+              <el-option
+                v-for="item in levels"
+                :key="item"
+                :label="item"
+                :value="item"
+              />
+            </el-select>
           </el-col>
+            <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+                <span class="searchText">首次采集时间范围</span>
+                <el-date-picker
+                        v-model="first_fetch_time"
+                        type="daterange"
+                        unlink-panels
+                        range-separator="到"
+                        start-placeholder="起始日期"
+                        end-placeholder="结束日期"
+                        :editable="false"
+                        style="margin-left: 15px; width: 300px;"
+                />
+            </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-          <span class="searchText">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;关键词</span>
-          <el-select
-            v-model="keywords"
-            multiple
-            filterable
-            allow-create
-            default-first-option
-            :reserve-keyword="false"
-            placeholder="请输入关键字"
-            style="margin-left: 15px; width: 300px;"
-          />
-        </el-col>
+<!--            <span class="searchText">末次采集时间范围</span>-->
+<!--            <el-date-picker-->
+<!--              v-model="end_fetch_time"-->
+<!--              type="daterange"-->
+<!--              unlink-panels-->
+<!--              range-separator="到"-->
+<!--              start-placeholder="起始日期"-->
+<!--              end-placeholder="结束日期"-->
+<!--              :editable="false"-->
+<!--              style="margin-left: 15px; width: 300px;"-->
+<!--            />-->
+          </el-col>
+            <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+                <span class="searchText">新闻分类</span>
+                <el-select v-model="type" clearable placeholder="请选择" :multiple=true style="margin-left: 15px; width: 260px;">
+                    <el-option
+                            v-for="item in types"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                    />
+                </el-select>
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+                <span class="searchText">末次采集时间范围</span>
+                <el-date-picker
+                        v-model="end_fetch_time"
+                        type="daterange"
+                        unlink-panels
+                        range-separator="到"
+                        start-placeholder="起始日期"
+                        end-placeholder="结束日期"
+                        :editable="false"
+                        style="margin-left: 15px; width: 300px;"
+                />
+            </el-col>
         </el-row>
         <el-row class="searchConditions">
 
