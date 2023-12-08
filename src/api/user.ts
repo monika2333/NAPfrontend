@@ -95,6 +95,7 @@ export const updateSourceMedia = data => {
   return http.request<any>("post", baseUrlApi("source/update"), { data });
 };
 
+//消息订阅
 export const delMessage = data => {
   return http.request<any>("post", baseUrlApi("messageSubscribe/delete"), {
     data
@@ -110,4 +111,18 @@ export const handleClick = data => {
   return http.request<any>("post", baseUrlApi("messageSubscribe/delete"), {
     data
   });
+};
+
+//舆情热度
+//top50
+export const getTop50 = () => {
+  return http.request<any>("get", baseUrlApi("hotdegree/top50"));
+};
+//线
+export const gethotline = data => {
+  return http.request<any>("post", baseUrlApi("hotdegree/hotline"), { data });
+};
+//链接
+export const gethotlink = data => {
+  return http.request<any>("post", baseUrlApi("hotdegree/hotlink"), { data });
 };
