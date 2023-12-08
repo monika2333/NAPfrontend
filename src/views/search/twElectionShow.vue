@@ -145,6 +145,8 @@
         <el-table :data="showData" stripe style="width: 100%">
           <el-table-column prop="time" label="新闻发布日期（UTC+8）" width="180"/>
           <el-table-column prop="fetch_number" label="采集次数" width="120"/>
+<!--          <el-table-column prop="end_rank" label="末次排名" width="120"/>-->
+          <el-table-column prop="history_highest_rank" label="历史最高排名" width="120"/>
           <el-table-column prop="simple_title" label="标题"/>
           <!-- <el-table-column prop="text" label="正文" height="10"/> -->
           <el-table-column prop="type" label="分类" width="180"/>
