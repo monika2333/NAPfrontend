@@ -357,9 +357,13 @@
       },
       // 清空条件
       handleClearConditions() {
-        this.keyword = [];
-        this.time = '';
+        this.keywords = [];
+        this.publish_time = '';
         this.source = '';
+        this.level = '';
+        this.first_fetch_time = '';
+        this.type = '';
+        this.end_fetch_time = '';
       },
       getData(newSearch) {
         // if (this.keyword.length === 0) {
