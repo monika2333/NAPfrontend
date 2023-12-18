@@ -32,6 +32,7 @@
             <el-date-picker
                 v-model="publish_time"
                 type="daterange"
+                value-format="YYYY-MM-DD"
                 unlink-panels
                 range-separator="到"
                 start-placeholder="起始日期"
@@ -69,6 +70,7 @@
             <el-date-picker
                 v-model="first_fetch_time"
                 type="daterange"
+                value-format="YYYY-MM-DD"
                 unlink-panels
                 range-separator="到"
                 start-placeholder="起始日期"
@@ -106,6 +108,7 @@
             <el-date-picker
                 v-model="end_fetch_time"
                 type="daterange"
+                value-format="YYYY-MM-DD"
                 unlink-panels
                 range-separator="到"
                 start-placeholder="起始日期"
