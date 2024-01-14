@@ -11,9 +11,10 @@
         v-model="bjDailyReport.content"
         maxlength="3000"
         placeholder="Please input"
+        :rows="25"
         show-word-limit
         type="textarea"
-        style="width: 1500px;"
+        style="width: 1000px;"
       />
     </el-form-item>
 
