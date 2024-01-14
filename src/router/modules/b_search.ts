@@ -36,6 +36,22 @@ export default {
       meta: {
         title: "台湾大选新闻更新"
       }
+    },
+    {
+      path: "/search/bjDailyDB",
+      name: "SearchBjDailyDB",
+      component: () => import("@/views/search/bjDailyShow.vue"),
+      meta: {
+        title: "北京日报"
+      }
+    },
+    {
+      path: "/search/bjDailyReportDB",
+      name: "SearchBjDailyReportDB",
+      component: () => import("@/views/search/bjDailyReportShow.vue"),
+      meta: {
+        title: "北京日报每日上报"
+      }
     }
   ]
 };

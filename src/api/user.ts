@@ -66,9 +66,44 @@ export const exportTwElection = data => {
   return http.request<any>("post", baseUrlApi("twElection/exportInfos"), { data }, {responseType: 'blob'})
 }
 
-// 导出台湾大选信息
+// 更新台湾大选信息
 export const updateTwElectionInfo = data => {
   return http.request<any>("post", baseUrlApi("twElection/update"), { data }, {responseType: 'blob'})
+}
+
+//北京日报新闻展示
+export const getBjDailyList = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/list"), { data });
+};
+
+// 导出北京日报
+export const exportBjDaily = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/exportInfos"), { data }, {responseType: 'blob'})
+}
+
+// 根性北京日报
+export const updateBjDailyInfo = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/update"), { data }, {responseType: 'blob'})
+}
+
+//增加北京日报新闻
+export const addBjDaily = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/add"), { data });
+};
+
+//增加北京日报上报新闻
+export const addBjDailyReport = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/addReport"), { data });
+};
+
+//北京日报上报新闻展示
+export const getBjDailyReportList = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/reportList"), { data });
+};
+
+// 导出北京日报
+export const exportBjDailyReport = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/exportReportInfos"), { data }, {responseType: 'blob'})
 }
 
 
