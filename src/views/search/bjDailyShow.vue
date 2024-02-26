@@ -130,10 +130,10 @@
             >跳转
             </el-button
             >
-<!--            <el-button @click="handleClick3(scope.row)" type="text" size="small"-->
-<!--            >新闻内容-->
-<!--            </el-button-->
-<!--            >-->
+            <el-button @click="handleClick3(scope.row)" type="text" size="small"
+            >新闻内容
+            </el-button
+            >
 <!--            <el-button @click="handleClick2(scope.row)" type="text" size="small"-->
 <!--            >相关新闻-->
 <!--            </el-button-->
@@ -296,7 +296,7 @@ export default {
       });
     },
     handleClick3(row) {
-      ElMessageBox.alert(row.simple_text, row.simple_title, {
+      ElMessageBox.alert(row.all_content, row.title, {
         dangerouslyUseHTMLString: true,
         closeOnPressEscape: true,
       });

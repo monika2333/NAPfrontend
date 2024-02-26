@@ -258,7 +258,7 @@ export default {
         this.showWarning('请先查询');
         return;
       }
-      exportBjDaily({
+      exportBjDailyReport({
         'publish_time': this.publish_time,
         'fetch_time': this.fetch_time,
         'keywords': this.keywords,
