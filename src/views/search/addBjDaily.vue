@@ -114,15 +114,14 @@ export default {
           if(res.code==0)
           {
             alert('添加成功')
+            this.loading = false
             this.submitClose()
           }
           else
           {
             alert('添加失败')
+            this.loading = false
           }
-          this.bjDaily.name = ''
-          this.bjDaily.rssLink = ''
-          this.loading = false
         })
       }
     }

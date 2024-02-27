@@ -81,7 +81,7 @@ export const exportBjDaily = data => {
   return http.request<any>("post", baseUrlApi("bjDaily/exportInfos"), { data }, {responseType: 'blob'})
 }
 
-// 根性北京日报
+// 更新北京日报
 export const updateBjDailyInfo = data => {
   return http.request<any>("post", baseUrlApi("bjDaily/update"), { data }, {responseType: 'blob'})
 }
@@ -95,6 +95,17 @@ export const addBjDaily = data => {
 export const addBjDailyReport = data => {
   return http.request<any>("post", baseUrlApi("bjDaily/addReport"), { data });
 };
+
+//更新北京日报上报新闻
+export const updateBjDailyReport = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/updateReport"), { data });
+};
+
+
+//删除北京日报上报新闻
+export const deleteBjDailyReport = data => {
+  return http.request<any>("post", baseUrlApi("bjDaily/deleteReport"), { data })
+}
 
 //北京日报上报新闻展示
 export const getBjDailyReportList = data => {

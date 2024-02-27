@@ -123,22 +123,22 @@
 <!--            </el-select>-->
 <!--          </template>-->
 <!--        </el-table-column>-->
-<!--        <el-table-column fixed="right" label="操作" width="200">-->
-<!--          <template #default="scope">-->
-<!--            <el-button @click="handleClick(scope.row)" type="text" size="small"-->
-<!--            >跳转-->
-<!--            </el-button-->
-<!--            >-->
-<!--            &lt;!&ndash;            <el-button @click="handleClick3(scope.row)" type="text" size="small"&ndash;&gt;-->
-<!--            &lt;!&ndash;            >新闻内容&ndash;&gt;-->
-<!--            &lt;!&ndash;            </el-button&ndash;&gt;-->
-<!--            &lt;!&ndash;            >&ndash;&gt;-->
-<!--            &lt;!&ndash;            <el-button @click="handleClick2(scope.row)" type="text" size="small"&ndash;&gt;-->
-<!--            &lt;!&ndash;            >相关新闻&ndash;&gt;-->
-<!--            &lt;!&ndash;            </el-button&ndash;&gt;-->
-<!--            &lt;!&ndash;            >&ndash;&gt;-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <el-table-column fixed="right" label="操作" width="200">
+          <template #default="scope">
+              <el-button @click="handleClick3(scope.row)" type="text" size="small"
+              >更新
+              </el-button
+              >
+              <el-button @click="handleClick(scope.row)" type="text" size="small"
+              >删除
+              </el-button
+              >
+            <!--            <el-button @click="handleClick2(scope.row)" type="text" size="small"-->
+            <!--            >相关新闻-->
+            <!--            </el-button-->
+            <!--            >-->
+          </template>
+        </el-table-column>
       </el-table>
       <div class="pagination">
         <el-pagination
@@ -159,6 +159,14 @@
       :before-close="handleClose">
       <AddBjDailyReport ref="add" :submitClose="submitClose"></AddBjDailyReport>
     </el-drawer>
+    <el-drawer
+        ref="updateDrawer"
+        v-model="updateDrawer"
+        direction="ltr"
+        size="50%"
+        :before-close="handleUpdateClose">
+      <UpdateBjDailyReport :bjDailyUpdateReport="updateBjDailyReport" ref="update" :submitClose="submitClose"></UpdateBjDailyReport>
+    </el-drawer>
   </div>
 </template>
 
@@ -168,9 +176,10 @@ import {Search, Refresh, Download, Plus} from '@element-plus/icons-vue';
 
 <script>
 import {ElMessageBox, ElMessage} from "element-plus";
-import {getBjDailyReportList, exportBjDailyReport} from "@/api/user";
-import {updateBjDailyInfo} from "@/api/user";
+import {getBjDailyReportList, exportBjDailyReport, delSourceMedia} from "@/api/user";
+import {updateBjDailyInfo, deleteBjDailyReport} from "@/api/user";
 import AddBjDailyReport from './addBjDailyReport.vue';
+import UpdateBjDailyReport from './updateBjDailyReport.vue';
 
 export default {
   data() {
@@ -186,6 +195,16 @@ export default {
         }
       ],
       drawer: false,
+      updateDrawer: false,
+      updateBjDailyReport: {
+        id: '',
+        type: '',
+        number: '',
+        report_date: '',
+        title: '',
+        content: '',
+        source_or_url: ''
+      },
       source: '',
       nums: 0,
       publish_time: '',
@@ -198,10 +217,12 @@ export default {
       currentPage: 0,
       limit: 20,
       total: 0,
+
     };
   },
   components: {
-    AddBjDailyReport
+    AddBjDailyReport,
+    UpdateBjDailyReport
   },
   // 初始化前准备数据
   mounted() {
@@ -210,7 +231,23 @@ export default {
   methods: {
     handleClick(row) {
       // console.log(row);
-      window.open(row.url, "_blank");
+      ElMessageBox.confirm(
+          '确定删除吗？（此操作不可逆）',
+      ).then(()=>{
+            deleteBjDailyReport({id: row._id}).then(res => {
+                  if(res.code === 0)
+                  {
+                    alert('删除成功')
+                    this.submitClose()
+                  }
+                  else
+                  {
+                    alert('删除失败')
+                  }
+                }
+            )
+                .catch(() => {})
+          })
     },
     //展示添加页面
     showAddSidebar(){
@@ -220,19 +257,25 @@ export default {
       ElMessageBox.confirm('确定要关闭吗？（你将失去所填内容）')
         .then(() => {
           this.$refs.drawer.close()
-          this.$refs.add.media.name = ''
-          this.$refs.add.media.rssLink = ''
         })
         .catch(() => {
 
         })
     },
+    handleUpdateClose(){
+      ElMessageBox.confirm('确定要关闭吗？（你将失去所填内容）')
+          .then(() => {
+            this.$refs.updateDrawer.close()
+          })
+          .catch(() => {
+
+          })
+    },
     submitClose(){
       console.log('yes')
-      // getBjDailyReportList({'limit': this.limit}).then(res => {
-      //   this.tableData = res.data
-      // })
+      this.getData(false)
       this.$refs.drawer.close()
+      this.$refs.updateDrawer.close()
       this.$refs.add.bjDailyReport.content = ''
     },
     //更新是否上报
@@ -294,10 +337,18 @@ export default {
       });
     },
     handleClick3(row) {
-      ElMessageBox.alert(row.simple_text, row.simple_title, {
-        dangerouslyUseHTMLString: true,
-        closeOnPressEscape: true,
-      });
+      this.updateBjDailyReport.id = row._id
+      this.updateBjDailyReport.type = row.type
+      this.updateBjDailyReport.number = row.number
+      this.updateBjDailyReport.report_date = row.report_date
+      this.updateBjDailyReport.title = row.title
+      this.updateBjDailyReport.content = row.content
+      this.updateBjDailyReport.source_or_url = row.source_or_url
+      this.updateDrawer = true
+      // ElMessageBox.alert(row.simple_text, row.simple_title, {
+      //   dangerouslyUseHTMLString: true,
+      //   closeOnPressEscape: true,
+      // });
     },
     // 封装用户提示
     showWarning(content) {
@@ -357,7 +408,6 @@ export default {
       }
         getBjDailyReportList(data).then(res => {
 
-        // console.log(res)
         this.tableData = res.data.ret;
         this.total = res.data.count;
       });
