@@ -17,17 +17,16 @@
           />
         </el-col> -->
         <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-          <span class="searchText">上报时间范围</span>
-          <el-date-picker
-            v-model="report_date"
-            type="daterange"
-            value-format="YYYY-MM-DD"
-            unlink-panels
-            range-separator="到"
-            start-placeholder="起始日期"
-            end-placeholder="结束日期"
-            :editable="false"
-            style="margin-left: 15px; width: 300px;"
+          <span class="searchText">作者</span>
+          <el-select
+            v-model="author"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="请输入作者"
+            style="margin-left: 15px; width: 300px"
           />
         </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
@@ -44,9 +43,9 @@
           />
         </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-          <span class="searchText">添加时间范围</span>
+          <span class="searchText">发布时间范围</span>
           <el-date-picker
-            v-model="add_time"
+            v-model="publish_time"
             type="daterange"
             value-format="YYYY-MM-DD"
             unlink-panels
@@ -91,52 +90,17 @@
     </div>
     <div class="searchResults">
       <el-table :data="showData" stripe style="width: 100%">
-        <el-table-column prop="type" label="上报内容类型" width="180"/>
-        <el-table-column prop="number" label="上报期数" width="180"/>
-        <el-table-column prop="report_date" label="上报日期" width="120"/>
-        <el-table-column prop="title" label="标题" width="120"/>
-        <!--          <el-table-column prop="end_rank" label="末次排名" width="120"/>-->
-        <!--        <el-table-column prop="history_highest_rank" label="历史最高排名" width="120"/>-->
-        <el-table-column prop="content" label="内容"/>
-        <el-table-column prop="source_or_url" label="上报来源或链接" width="180" height="10"/>
-        <el-table-column prop="add_time" label="添加时间" width="180">
-          <!--          <template  #default="scope">-->
-          <!--            <el-select v-model="sentimentType[scope.row.sentiment]" clearable placeholder="请选择" @blur="updateType(scope.row)">-->
-          <!--              <el-option-->
-          <!--                v-for="item in sentiment"-->
-          <!--                :key="item.value"-->
-          <!--                :label="item.key"-->
-          <!--                :value="item.value"-->
-          <!--              />-->
-          <!--            </el-select>-->
-          <!--          </template>-->
+        <el-table-column prop="author" label="作者" width="120"/>
+        <el-table-column prop="summary" label="内容"/>
+        <el-table-column prop="simple_summary" label="内容（中文）"/>
+        <el-table-column prop="time" label="发布时间" width="180">
         </el-table-column>
-<!--        <el-table-column prop="is_post" label="是否上报" width="180">-->
-<!--          <template  #default="scope">-->
-<!--            <el-select v-model="scope.row.is_post" clearable placeholder="请选择" @blur="updateLevel(scope.row)">-->
-<!--              <el-option-->
-<!--                v-for="item in isPostType"-->
-<!--                :key="item.label"-->
-<!--                :label="item.value"-->
-<!--                :value="item.label"-->
-<!--              />-->
-<!--            </el-select>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
         <el-table-column fixed="right" label="操作" width="200">
           <template #default="scope">
-              <el-button @click="handleClick3(scope.row)" type="text" size="small"
-              >更新
-              </el-button
-              >
-              <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >删除
-              </el-button
-              >
-            <!--            <el-button @click="handleClick2(scope.row)" type="text" size="small"-->
-            <!--            >相关新闻-->
-            <!--            </el-button-->
-            <!--            >-->
+            <el-button @click="handleClick(scope.row)" type="text" size="small"
+            >跳转
+            </el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -151,22 +115,6 @@
         />
       </div>
     </div>
-    <el-drawer
-      ref="drawer"
-      v-model="drawer"
-      direction="ltr"
-      size="50%"
-      :before-close="handleClose">
-      <AddBjDailyReport ref="add" :submitClose="submitClose"></AddBjDailyReport>
-    </el-drawer>
-    <el-drawer
-        ref="updateDrawer"
-        v-model="updateDrawer"
-        direction="ltr"
-        size="50%"
-        :before-close="handleUpdateClose">
-      <UpdateBjDailyReport :bjDailyUpdateReport="updateBjDailyReport" ref="update" :submitClose="submitClose"></UpdateBjDailyReport>
-    </el-drawer>
   </div>
 </template>
 
@@ -176,10 +124,7 @@ import {Search, Refresh, Download, Plus} from '@element-plus/icons-vue';
 
 <script>
 import {ElMessageBox, ElMessage} from "element-plus";
-import {getBjDailyReportList, exportBjDailyReport, delSourceMedia} from "@/api/user";
-import {updateBjDailyInfo, deleteBjDailyReport} from "@/api/user";
-import AddBjDailyReport from './addBjDailyReport.vue';
-import UpdateBjDailyReport from './updateBjDailyReport.vue';
+import {getTweetList, exportTweet} from "@/api/user";
 
 export default {
   data() {
@@ -208,9 +153,10 @@ export default {
       source: '',
       nums: 0,
       report_date: '',
-      add_time: '',
+      publish_time: '',
       level: [],
       type: [],
+      author: '',
       keywords: [],
       exportType: 'excel',
       tableData: [],
@@ -221,8 +167,6 @@ export default {
     };
   },
   components: {
-    AddBjDailyReport,
-    UpdateBjDailyReport
   },
   // 初始化前准备数据
   mounted() {
@@ -231,23 +175,7 @@ export default {
   methods: {
     handleClick(row) {
       // console.log(row);
-      ElMessageBox.confirm(
-          '确定删除吗？（此操作不可逆）',
-      ).then(()=>{
-            deleteBjDailyReport({id: row._id}).then(res => {
-                  if(res.code === 0)
-                  {
-                    alert('删除成功')
-                    this.submitClose()
-                  }
-                  else
-                  {
-                    alert('删除失败')
-                  }
-                }
-            )
-                .catch(() => {})
-          })
+      window.open(row.link, "_blank");
     },
     //展示添加页面
     showAddSidebar(){
@@ -264,12 +192,12 @@ export default {
     },
     handleUpdateClose(){
       ElMessageBox.confirm('确定要关闭吗？（你将失去所填内容）')
-          .then(() => {
-            this.$refs.updateDrawer.close()
-          })
-          .catch(() => {
+        .then(() => {
+          this.$refs.updateDrawer.close()
+        })
+        .catch(() => {
 
-          })
+        })
     },
     submitClose(){
       console.log('yes')
@@ -406,7 +334,7 @@ export default {
       } else {
         data.current_page = this.currentPage;
       }
-        getBjDailyReportList(data).then(res => {
+      getTweetList(data).then(res => {
 
         this.tableData = res.data.ret;
         this.total = res.data.count;

@@ -164,6 +164,51 @@ export const handleClick = data => {
 export const getTop50 = () => {
   return http.request<any>("get", baseUrlApi("hotdegree/top50"));
 };
+
+//智库推文列表
+export const getTweetList = data => {
+  return http.request<any>("post", baseUrlApi("twitter/list"), { data });
+};
+
+// 导出智库推文
+export const exportTweet = data => {
+  return http.request<any>("post", baseUrlApi("twitter/exportTweet"), { data }, {responseType: 'blob'})
+}
+
+//增加智库检测推特用户
+export const addTwitterUser = data => {
+  return http.request<any>("post", baseUrlApi("twitter/addUser"), { data });
+};
+
+//更新智库检测推特用户
+export const updateTwitterUser = data => {
+  return http.request<any>("post", baseUrlApi("twitter/updateUser"), { data });
+};
+
+//删除智库检测推特用户
+export const delTwitterUser = data => {
+    return http.request<any>("post", baseUrlApi("twitter/deleteUser"), { data });
+};
+
+//获取智库检测推特用户
+export const getUserList = () => {
+    return http.request<any>("get", baseUrlApi("twitter/userList"));
+};
+
+//删除推特消息订阅
+export const delTwitterMessage = data => {
+    return http.request<any>("post", baseUrlApi("twitter/deleteMessageSubscribe"), {
+        data
+    });
+};
+
+//添加推特消息订阅
+export const addTwitterMessage = data => {
+    return http.request<any>("post", baseUrlApi("twitter/addMessageSubscribe"), {
+        data
+    });
+};
+
 //线
 export const gethotline = data => {
   return http.request<any>("post", baseUrlApi("hotdegree/hotline"), { data });
