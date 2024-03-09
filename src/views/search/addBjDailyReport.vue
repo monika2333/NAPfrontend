@@ -47,6 +47,8 @@ export default {
         this.loading = true
         console.log(this.bjDailyReport)
         addBjDailyReport(this.bjDailyReport).then(res=>{
+          this.bjDailyReport.content = ''
+          this.loading = false
           if(res.code==0)
           {
             alert('添加成功')
@@ -56,8 +58,6 @@ export default {
           {
             alert('添加失败')
           }
-          this.bjDaily.content = ''
-          this.loading = false
         })
       }
     }

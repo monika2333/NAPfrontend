@@ -19,7 +19,7 @@
         <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
           <span class="searchText">上报时间范围</span>
           <el-date-picker
-            v-model="report_date"
+            v-model="report_time"
             type="daterange"
             value-format="YYYY-MM-DD"
             unlink-panels
@@ -180,6 +180,7 @@ import {getBjDailyReportList, exportBjDailyReport, delSourceMedia} from "@/api/u
 import {updateBjDailyInfo, deleteBjDailyReport} from "@/api/user";
 import AddBjDailyReport from './addBjDailyReport.vue';
 import UpdateBjDailyReport from './updateBjDailyReport.vue';
+import {TRUE} from "sass";
 
 export default {
   data() {
@@ -208,6 +209,7 @@ export default {
       source: '',
       nums: 0,
       report_date: '',
+      report_time: '',
       add_time: '',
       level: [],
       type: [],
@@ -227,6 +229,9 @@ export default {
   // 初始化前准备数据
   mounted() {
 
+  },
+  created() {
+    this.getData();
   },
   methods: {
     handleClick(row) {
@@ -369,12 +374,8 @@ export default {
     // 清空条件
     handleClearConditions() {
       this.keywords = [];
-      this.publish_time = '';
-      this.source = '';
-      this.level = '';
-      this.first_fetch_time = '';
-      this.type = '';
-      this.end_fetch_time = '';
+      this.report_time = '';
+      this.add_time = '';
     },
     getData(newSearch) {
       // if (this.keyword.length === 0) {
@@ -390,11 +391,10 @@ export default {
       //   return;
       // }
       let data = {
-        'publish_time': this.publish_time,
-        'fetch_time': this.fetch_time,
+        'report_time': this.report_time,
+        'add_time': this.add_time,
         'limit': this.limit,
-        'keywords': this.keywords,
-        'search_type': 'update'
+        'keywords': this.keywords
       }
       if (newSearch) {
         data.current_page = 0;
