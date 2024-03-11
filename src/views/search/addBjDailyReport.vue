@@ -9,7 +9,7 @@
     <el-form-item label="新增内容">
       <el-input
         v-model="bjDailyReport.content"
-        maxlength="3000"
+        maxlength="5000"
         placeholder="Please input"
         :rows="25"
         show-word-limit
