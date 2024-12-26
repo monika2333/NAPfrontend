@@ -12,7 +12,7 @@
     <el-form-item label="新闻内容">
       <el-input
         v-model="bjDaily.content"
-        maxlength="300"
+        maxlength="500"
         placeholder="Please input"
         show-word-limit
         type="textarea"

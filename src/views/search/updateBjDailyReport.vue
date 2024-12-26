@@ -21,7 +21,7 @@
     <el-form-item label="内容">
       <el-input
           v-model="bjDailyUpdateReport.content"
-          maxlength="300"
+          maxlength="500"
           placeholder="Please input"
           show-word-limit
           type="textarea"
