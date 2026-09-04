@@ -83,8 +83,8 @@
         <span style="font-size: 13px; font-weight: 700;">{{ isExporting ? '正在导出…' : `导出（${exportType}）` }}</span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item command="excel">Excel</el-dropdown-item>
             <el-dropdown-item command="csv">CSV</el-dropdown-item>
+            <el-dropdown-item command="excel">Excel</el-dropdown-item>
             <el-dropdown-item command="json">Json</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -215,7 +215,7 @@ export default {
       level: [],
       type: [],
       keywords: [],
-      exportType: 'excel',
+      exportType: 'csv',
       isExporting: false,
       tableData: [],
       currentPage: 0,
