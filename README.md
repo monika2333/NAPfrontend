@@ -3,9 +3,6 @@
 ## 注意
 先 pnpm build 之后再push
 
-## gitlab
-https://gitlab.com/llmy/NAPfrontend
-
 ## 官方文档
 
 - [查看文档](https://yiming_chang.gitee.io/pure-admin-doc)
