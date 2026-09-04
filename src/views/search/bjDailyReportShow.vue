@@ -74,12 +74,13 @@
       </el-button-group>
       <el-dropdown @click="handleDropdownMenuClick"
                    @command="handleCommand"
+                   :disabled="isExporting"
                    size="default"
                    split-button
                    type="primary"
                    style="margin-left: 15px;">
         <el-icon><Download/></el-icon>
-        <span style="font-size: 13px; font-weight: 700;">导出（{{ exportType }}）</span>
+        <span style="font-size: 13px; font-weight: 700;">{{ isExporting ? '正在导出…' : `导出（${exportType}）` }}</span>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item command="excel">Excel</el-dropdown-item>
@@ -215,6 +216,7 @@ export default {
       type: [],
       keywords: [],
       exportType: 'excel',
+      isExporting: false,
       tableData: [],
       currentPage: 0,
       limit: 20,
@@ -301,18 +303,32 @@ export default {
       this.exportType = command;
     },
     // 导出数据
-    handleDropdownMenuClick() {
+    async handleDropdownMenuClick() {
       if (!this.total) {
         this.showWarning('请先查询');
         return;
       }
-      exportBjDailyReport({
-        'publish_time': this.publish_time,
-        'fetch_time': this.fetch_time,
-        'keywords': this.keywords,
-        'exportType': this.exportType,
-        'search_type': 'update'
-      }).then(res => {
+      if (this.isExporting) {
+        return;
+      }
+
+      this.isExporting = true;
+      try {
+        const res = await exportBjDailyReport({
+          'report_time': this.report_time,
+          'add_time': this.add_time,
+          'keywords': this.keywords,
+          'exportType': this.exportType
+        });
+
+        if (!(res instanceof Blob) || res.size === 0) {
+          throw new Error('服务器未返回有效的导出文件');
+        }
+        if (res.type.includes('application/json')) {
+          const payload = JSON.parse(await res.text());
+          throw new Error(payload.msg || '服务器生成文件失败');
+        }
+
         let filename;
         if (this.exportType === 'excel') {
           filename = "export" + ".xlsx";
@@ -321,13 +337,29 @@ export default {
         } else {
           filename = "export" + ".json"
         }
-        const url = window.URL.createObjectURL(new Blob([res]));
+        const url = window.URL.createObjectURL(res);
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
-      });
+        link.remove();
+        window.setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+      } catch (error) {
+        let errorMessage = error?.message || '请稍后重试';
+        const errorBlob = error?.response?.data;
+        if (errorBlob instanceof Blob && errorBlob.type.includes('application/json')) {
+          try {
+            const payload = JSON.parse(await errorBlob.text());
+            errorMessage = payload.msg || errorMessage;
+          } catch (_) {
+            // 保留原始请求错误信息
+          }
+        }
+        ElMessage.error(`导出失败：${errorMessage}`);
+      } finally {
+        this.isExporting = false;
+      }
     },
     disabledDate(time) {
       // 获取当前日期
